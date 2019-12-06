@@ -1,0 +1,138 @@
+<%- include('../_layouts/adminheader') %>
+
+<!-- BEGIN Main Content -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-title">
+                <h3><i class="fa fa-table"></i> Camp</h3>
+                <div class="box-tool">
+                    <a data-action="collapse" href="#"><i class="fa fa-chevron-up"></i></a>
+                    <a data-action="close" href="#"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+
+            <div class="box-content">
+                <div class="btn-toolbar pull-right clearfix">
+                    <div class="btn-group">
+                        <a title="" class="btn btn-circle show-tooltip" data-toggle="modal" href="#addnew"
+                            data-original-title="Thêm"><i class="fa fa-plus"></i></a>
+                    </div>
+
+                </div>
+                <br>
+                <br>
+                <div class="table-responsive">
+                    <% if(count > 0) {%>
+                    <table id="example" class="display">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Tên</th>
+                                <th>Nội dung</th>
+                                <th style="width: 150px">Ghi chú</th>
+                                <th style="width: 150px">Loại</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% camp.forEach(function(camp, i){ %>
+                            <tr>
+                                <td><%= i + 1 %></td>                               
+                                <td><%= camp.name %></td>
+                                <td><%= camp.content %></td>
+                                <td><%= camp.des %></td>
+                                <td><%= camp.type %></td>                                
+                                <!-- <td><%= camp.status %></td>                                 -->
+                                <td>
+                                    <a class="btn btn-primary btn-sm edit" href="#" data-id="<%= camp._id %>" data-type="<%= camp.type %>"><i
+                                            class="fa fa-edit" ></i> Edit</a>
+                                    <a class="btn btn-danger btn-sm delete" href="#" data-id="<%= camp._id %>" ><i
+                                            class="fa fa-trash-o"></i> Delete</a>
+                                    
+                                </td>  
+                                <td>
+                                    <a class="btn btn-primary btn-sm sendcamp" href="#" data-id="<%= camp._id %>" data-campname="<%= camp.name %>"  data-type="<%= camp.type %>"><i
+                                        class="fa fa-paper-plane"></i><%= camp.status == 1 ? ' Đã gửi' : ' Gửi'%></a>
+                                </td>                                                            
+                            </tr>
+                            <% }); %>
+
+                        </tbody>
+                    </table>
+                    <% } else {%>
+                        <h3 class="text-center">There are no camp.</h3>
+                        <% }%>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<%- include('./modal/camp_modal') %>
+<!-- END Main Content -->
+
+<%- include('../_layouts/adminfooter') %>
+<script>
+    $(function () {       
+        
+        $(document).on('click', '.edit', function (e) {
+            e.preventDefault();
+            $('#edit').modal('show');
+            var id = $(this).data('id');
+            var type = $(this).data('type');
+            $('#edit_type > option').removeAttr('selected').filter(`[value=${type}]`).prop('selected', true)
+            $.ajax({
+                type: 'GET',
+                url: '/admin/camps/edit-camp/' + id,
+                dataType: 'json',
+                success: function (response) {
+                    $('#edit_name').val(response.name);
+                    $('#edit_content').val(response.content);
+                    $('#edit_des').val(response.des);   
+                                   
+                    $('#edit_camp').attr('action', '/admin/camps/edit-camp/' +
+                        id);
+                    // console.log('run');
+                    // console.log(response.type);
+                }
+            });
+        });
+
+        $(document).on('click', '.sendcamp', function (e) {
+            e.preventDefault();           
+            $('#send').modal('show'); 
+            var id = $(this).data('id');  
+            var campname = $(this).data('campname');  
+            var type = $(this).data('type');  
+            $('#camp_name').val(campname); 
+            $('#camp_type').val(type); 
+            $('#send_camp').attr('action',
+                '/admin/camps/send-camp/' + id);
+        });
+
+        $(document).on('click', '.delete', function (e) {
+            e.preventDefault();
+            $('#delete').modal('show');
+            var id = $(this).data('id');
+            $('#delete_camp').attr('action',
+                '/admin/camps/delete-camp/' + id);
+        });
+
+    });
+
+    $('#example').DataTable({
+        "lengthMenu": [
+            [10, 25, 50, -1],
+            [10, 25, 50, "All"]
+        ]
+    });
+</script>
+</body>
+
+<!-- Mirrored from thetheme.io/flaty/ by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 27 Sep 2019 07:16:48 GMT -->
+
+</html>

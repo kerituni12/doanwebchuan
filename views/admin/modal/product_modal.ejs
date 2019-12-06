@@ -1,0 +1,196 @@
+<div class="modal fade" id="addnew">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><b>Thêm Danh mục</b></h4>
+            </div>
+            <div class="modal-body">
+                <form action="/admin/products/add-product" class="form-horizontal" method="POST"
+                    enctype="multipart/form-data">
+
+                    <div class="form-group">
+                        <label class="col-sm-3 col-lg-2 control-label">Tên sản phẩm</label>
+                        <div class="col-sm-9 col-lg-10 controls">
+                            <input type="text" class="form-control" name="title"  />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 col-lg-2 control-label">Danh mục</label>
+                        <div class="col-sm-9 col-lg-10 controls">
+                            <select name="category" class="form-control" name="cate" >
+                                <% categories.forEach(function(cat){ %>
+                                <option value="<%= cat.slug %>"><%= cat.title %></option>
+                                <% }); %>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 col-lg-2 control-label">Giá</label>
+                        <div class="col-sm-9 col-lg-10 controls">
+                            <input type="text" class="form-control" name="price"  />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 col-lg-2 control-label">Số lượng</label>
+                        <div class="col-sm-9 col-lg-10 controls">
+                            <input type="text" class="form-control" name="count" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 col-lg-2 control-label">Ảnh</label>
+                        <div class="col-sm-9 col-lg-10 controls">
+                            <input type="file" class="form-control img" name="image">
+                            <img src="" class="imgPreview" alt="">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 col-lg-2 control-label">Mô tả</label>
+                        <div class="col-sm-9 col-lg-10 controls">
+                            <textarea name="desc" class="form-control" cols="30" rows="10" ></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 col-lg-2 control-label">Mã vạch</label>
+                        <div class="col-sm-9 col-lg-10 controls">
+                            <input type="text" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2">
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-check"></i> Lưu</button>
+                            <button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal"><i
+                                    class="fa fa-close"></i> Đóng</button>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit  -->
+<div class="modal fade" id="edit">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title"><b>Chỉnh sửa Danh mục</b></h4>
+                </div>
+                <div class="modal-body">
+                    <form action="#" class="form-horizontal" method="POST" enctype="multipart/form-data" id="edit-form">
+    
+                        <div class="form-group">
+                            <label class="col-sm-3 col-lg-2 control-label">Tên sản phẩm</label>
+                            <div class="col-sm-9 col-lg-10 controls">
+                                <input type="text" class="form-control" name="title" id="edit_title"/>
+                            </div>
+                        </div>
+    
+                        <div class="form-group">
+                            <label class="col-sm-3 col-lg-2 control-label">Danh mục</label>
+                            <div class="col-sm-9 col-lg-10 controls">
+                                <select name="category" class="form-control" name="cate" id="edit_cate">
+                                    <% categories.forEach(function(cat){ %>
+                                    <option value="<%= cat.slug %>"><%= cat.title %></option>
+                                    <% }); %>
+                                </select>
+                            </div>
+                        </div>
+    
+                        <div class="form-group">
+                            <label class="col-sm-3 col-lg-2 control-label">Giá</label>
+                            <div class="col-sm-9 col-lg-10 controls">
+                                <input type="text" class="form-control" name="price" id="edit_price"/>
+                            </div>
+                        </div>
+    
+                        <div class="form-group">
+                            <label class="col-sm-3 col-lg-2 control-label">Số lượng</label>
+                            <div class="col-sm-9 col-lg-10 controls">
+                                <input type="text" class="form-control" name="count" id="edit_count"/>
+                            </div>
+                        </div>
+    
+                        <div class="form-group">
+                            <label class="col-sm-3 col-lg-2 control-label">Ảnh hiện tại</label>
+                            <div class="col-sm-9 col-lg-10 controls">                               
+                                <img src="" id="noimage" alt="" width="100px" height="100px">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 col-lg-2 control-label">Ảnh</label>
+                            <div class="col-sm-9 col-lg-10 controls">
+                                <input type="file" class="form-control img" name="image" >
+                                <img src="" class="imgPreview" alt="">
+                            </div>
+                        </div>
+    
+                        <div class="form-group">
+                            <label class="col-sm-3 col-lg-2 control-label">Mô tả</label>
+                            <div class="col-sm-9 col-lg-10 controls">
+                                <textarea name="desc" class="form-control" cols="30" rows="10" id="edit_desc"></textarea>
+                            </div>
+                        </div>
+    
+                        <div class="form-group">
+                            <label class="col-sm-3 col-lg-2 control-label">Mã vạch</label>
+                            <div class="col-sm-9 col-lg-10 controls">
+                                <input type="text" class="form-control" />
+                            </div>
+                        </div>
+    
+                        <div class="form-group">
+                            <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2">
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-check"></i> Lưu</button>
+                                <button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal"><i
+                                        class="fa fa-close"></i> Đóng</button>
+                            </div>
+                        </div>
+                    </form>
+    
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- Delete -->
+<div class="modal fade" id="delete">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><b>Xóa Thành Viên</b></h4>
+            </div>
+            <div class="modal-body">
+
+                <form action="#" class="form-horizontal" id="delete-form" method="POST">
+
+                    <!-- <input type="hidden" class="catid" name="id"> -->
+                    <div class="text-center">
+                        <p>Bạn có muốn sản phẩm</p>
+                        <h2 class="bold" id="del-name"></h2>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2">
+                            <button type="submit" class="btn btn-danger btn-flat btn-right" name="del"><i
+                                    class="fa fa-trash-o"></i> Xóa</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

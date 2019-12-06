@@ -1,0 +1,138 @@
+<%- include('../_layouts/adminheader') %>
+
+            <!-- BEGIN Main Content -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-title">
+                            <h3><i class="fa fa-table"></i> Danh mục</h3>
+                            <div class="box-tool">
+                                <a data-action="collapse" href="#"><i class="fa fa-chevron-up"></i></a>
+                                <a data-action="close" href="#"><i class="fa fa-times"></i></a>
+                            </div>
+                        </div>
+
+                        <div class="box-content">
+                            <div class="btn-toolbar pull-right clearfix">
+                                <div class="btn-group">
+                                    <a title="" class="btn btn-circle show-tooltip" data-toggle="modal" href="#addnew"
+                                        data-original-title="Thêm"><i class="fa fa-plus"></i></a>
+                                </div>
+
+                            </div>
+                            <br>
+                            <br>
+                            <div class="table-responsive">
+                                
+<% if (count > 0) { %>  
+                                <table id="example" class="display">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Tên danh mục</th>
+                                            <th>Danh mục</th>
+                                            <th>Giá</th>
+                                            <th>Số lượng</th>
+                                            <th style="width: 150px">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% products.forEach(function(product, i){ %>
+                                        <tr>
+                                            <td><%= i + 1 %></td>
+                                            <td><%= product.title %></td>
+                                            <td><%= product.category %></td>
+                                            <td><%= product.price %></td>
+                                            <td><%= product.count %></td>
+                                            <td>
+                                                <a class="btn btn-primary btn-sm edit" href="#"
+                                                    data-id="<%= product._id %>"><i class="fa fa-edit"></i> Edit</a>
+                                                <a class="btn btn-danger btn-sm delete" href="#"
+                                                    data-id="<%= product._id %>"><i class="fa fa-trash-o"></i>
+                                                    Delete</a>
+                                            </td>
+                                        </tr>
+                                        <% }); %>
+
+                                    </tbody>
+                                </table>
+                                <% } else {%>
+                                    <h3 class="text-center">Không có sản phẩm</h3>
+                                    <% }%>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <%- include('./modal/product_modal') %>
+            <!-- END Main Content -->
+
+            <%- include('../_layouts/adminfooter') %>   
+    <script>
+        $(function () {
+            $(document).on('click', '.edit', function (e) {
+                e.preventDefault();
+                $('#edit').modal('show');
+                var id = $(this).data('id');
+                $.ajax({
+                    type: 'GET',
+                    url: '/admin/products/edit-product/' + id,
+                    dataType: 'json',
+                    success: function (res) {
+                        $('#edit_title').val(res.title);
+                        $('#edit_price').val(res.price);
+                        $('#edit_count').val(res.count);
+                        if(res.image == "") 
+                        $('#noimage').attr('src', '/images/noimage.png');
+                        else
+                        $('#noimage').attr('src', `/product_images/${id}/${res.image}`);
+                        $('#edit_desc').val(res.desc);
+                        $('#edit-form').attr('action', '/admin/products/edit-product/' +
+                            id);
+                        console.log('run');
+                    }
+                });
+            });
+
+            $(document).on('click', '.delete', function (e) {
+                e.preventDefault();
+                $('#delete').modal('show');
+                var id = $(this).data('id');
+                $('#delete-form').attr('action',
+                            '/admin/products/delete-product/' + id);
+               
+            });
+
+        });
+
+        $('#example').DataTable({
+            "lengthMenu": [
+                [5, 25, 50, -1],
+                [5, 25, 50, "All"]
+            ]
+        });
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $(".imgPreview").attr('src', e.target.result).width(100).height(100);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $(".img").change(function () {
+            readURL(this);
+        });
+    </script>
+</body>
+
+<!-- Mirrored from thetheme.io/flaty/ by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 27 Sep 2019 07:16:48 GMT -->
+
+</html>

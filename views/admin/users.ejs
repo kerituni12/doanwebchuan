@@ -1,0 +1,113 @@
+<%- include('../_layouts/adminheader') %>
+
+<!-- BEGIN Main Content -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-title">
+                <h3><i class="fa fa-table"></i> Thành viên</h3>
+                <div class="box-tool">
+                    <a data-action="collapse" href="#"><i class="fa fa-chevron-up"></i></a>
+                    <a data-action="close" href="#"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+
+            <div class="box-content">
+                <div class="btn-toolbar pull-right clearfix">
+                    <div class="btn-group">
+                        <a title="" class="btn btn-circle show-tooltip" data-toggle="modal" href="#addnew"
+                            data-original-title="Thêm"><i class="fa fa-plus"></i></a>
+                    </div>
+
+                </div>
+                <br>
+                <br>
+                <div class="table-responsive">
+                    <table id="example" class="display">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Tên</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Địa chỉ</th>
+                                <th>VT</th>
+                                <th style="width: 150px">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% users.forEach(function(user, i){ %>
+                            <tr>
+                                <td><%= i + 1 %></td>
+                                <td><%= user.name %></td>
+                                <td><%= user.phone %></td>
+                                <td><%= user.email %></td>
+                                <td><%= user.address %></td>
+                                <td><%= user.role %></td>
+                                <td>
+                                    <a class="btn btn-primary btn-sm edit" href="#" data-id="<%= user._id %>"><i
+                                            class="fa fa-edit"></i> Edit</a>
+                                    <a class="btn btn-danger btn-sm delete" href="#" data-id="<%= user._id %>"><i
+                                            class="fa fa-trash-o"></i> Delete</a>
+                                </td>
+                            </tr>
+                            <% }); %>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<%- include('./modal/user_modal') %>
+<!-- END Main Content -->
+
+<%- include('../_layouts/adminfooter') %>
+<script>
+    $(function () {
+        $(document).on('click', '.edit', function (e) {
+            e.preventDefault();
+            $('#edit').modal('show');
+            var id = $(this).data('id');
+            $.ajax({
+                type: 'GET',
+                url: '/admin/users/edit-user/' + id,
+                dataType: 'json',
+                success: function (res) {
+                    $('#edit-name').val(res.name);
+                    $('#edit-phone').val(res.phone);
+                    $('#edit-address').val(res.address);
+                    $('#edit-email').val(res.email);
+                    $('#edit-role').val(res.role);
+                    $('#edit-form').attr('action', '/admin/users/edit-user/' +
+                        id);
+                    console.log('run');
+                }
+            });
+        });
+
+        $(document).on('click', '.delete', function (e) {
+            e.preventDefault();
+            $('#delete').modal('show');
+            var id = $(this).data('id');
+            $('#delete-form').attr('action', '/admin/users/delete-user/' + id);
+        });
+
+    });
+
+    $('#example').DataTable({
+        "lengthMenu": [
+            [10, 25, 50, -1],
+            [10, 25, 50, "All"]
+        ]
+    });
+</script>
+</body>
+
+<!-- Mirrored from thetheme.io/flaty/ by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 27 Sep 2019 07:16:48 GMT -->
+
+</html>

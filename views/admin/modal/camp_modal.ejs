@@ -1,0 +1,170 @@
+<!-- Add -->
+<div class="modal fade" id="addnew">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title"><b>Thêm Camp </b></h4>
+                </div>
+                <div class="modal-body">                        
+                        <form action="/admin/camps/add-camp" class="form-horizontal"  method="POST">
+                                <div class="form-group">
+                                    <label class="col-sm-3 col-lg-2 control-label">Tên Camp</label>
+                                    <div class="col-sm-9 col-lg-10 controls">
+                                        <input type="text" class="form-control catname"   class="form-control" name="name"/>                                                                          
+                                    </div>
+                                </div>   
+                                <div class="form-group">
+                                    <label class="col-sm-3 col-lg-2 control-label">Nội dung</label>
+                                    <div class="col-sm-9 col-lg-10 controls">
+                                        <input type="text" class="form-control" name="content" />                                        
+                                    </div>
+                                </div> 
+                                <div class="form-group">
+                                    <label class="col-sm-3 col-lg-2 control-label">Ghi chú</label>
+                                    <div class="col-sm-9 col-lg-10 controls">
+                                        <input type="text" class="form-control" name="des" />                                        
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 col-lg-2 control-label">Loại</label>
+                                    <div class="col-sm-9 col-lg-10 controls">
+                                        <select class="form-control" name="type" >                               
+                                            <option value="facebook" selected>Facebook</option>                               
+                                            <option value="gmail">Gmail</option>                               
+                                            <option value="twitter">Twitter</option>  
+                                            <option value="telegram">Telegram</option>  
+                                        </select>                                  
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2">
+                                        <button type="submit" class="btn btn-success btn-flat btn-right" name="edit"><i class="fa fa-check-square-o"></i> Cập Nhật</button>                                     
+                                    </div>
+                                </div>    
+                            </form>                  
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+<!-- Edit -->
+<div class="modal fade" id="edit">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title"><b>Chỉnh sửa Camp</b></h4>
+                </div>
+                <div class="modal-body">                        
+                        <form action="#" class="form-horizontal" id="edit_camp" method="POST">
+                                <div class="form-group">
+                                        <label class="col-sm-3 col-lg-2 control-label">Tên Camp</label>
+                                        <div class="col-sm-9 col-lg-10 controls">
+                                            <input type="text" class="form-control catname" id="edit_name" class="form-control" name="name"/>                                                                          
+                                        </div>
+                                    </div>   
+                                    <div class="form-group">
+                                        <label class="col-sm-3 col-lg-2 control-label">Nội dung</label>
+                                        <div class="col-sm-9 col-lg-10 controls">
+                                            <!-- <input type="text" class="form-control" id="edit_content" name="content" />    -->
+                                            <textarea rows="2" id="edit_content" name="content" style="margin: 0px;height: 80px;width: 468px;padding: 10px;"> </textarea>                                
+                                        </div>
+                                    </div> 
+                                    <div class="form-group">
+                                        <label class="col-sm-3 col-lg-2 control-label">Ghi chú</label>
+                                        <div class="col-sm-9 col-lg-10 controls">
+                                            <input type="text" class="form-control" id="edit_des" name="des" />                                        
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 col-lg-2 control-label">Loại</label>
+                                        <div class="col-sm-9 col-lg-10 controls">
+                                            <select class="form-control" id="edit_type" name="type" >                               
+                                                <option value="facebook" selected>Facebook</option>                               
+                                                <option value="gmail">Gmail</option>                               
+                                                <option value="twitter">Twitter</option>  
+                                                <option value="telegram">Telegram</option> 
+                                            </select>                                  
+                                        </div>
+                                    </div> 
+                                    <div class="form-group">
+                                            <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2">
+                                                <button type="submit" class="btn btn-success btn-flat btn-right" name="edit"><i class="fa fa-check-square-o"></i> Cập Nhật</button>                                     
+                                            </div>
+                                        </div>   
+                            </form>                  
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+<!-- Send camp  -->
+<div class="modal fade" id="send">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><b>Send Camp</b></h4>
+            </div>
+            <div class="modal-body">                        
+                    <form action="#" class="form-horizontal" id="send_camp" method="POST">
+                            <div class="form-group">
+                                <label class="col-sm-3 col-lg-2 control-label">Tên Camp</label>
+                                <div class="col-sm-9 col-lg-10 controls">
+                                    <input type="text" class="form-control " id="camp_name" class="form-control" name="name"/>
+                                    <input type="hidden" class="form-control " id="camp_type" class="form-control" name="type"/>                                                                          
+                                </div>
+                            </div>   
+                            <div class="form-group">
+                                    <label class="col-sm-3 col-lg-2 control-label">Người nhận</label>
+                                    <div class="col-sm-9 col-lg-10 controls">
+                                        <input type="text" class="form-control " class="form-control" name="user"/>                                                                          
+                                    </div>
+                                </div> 
+                            </div> 
+                            <div class="form-group">
+                                <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2">
+                                    <button type="submit" class="btn btn-success btn-flat btn-right" name="edit"><i class="fa fa-check-square-o"></i> Cập Nhật</button>                                     
+                                </div>
+                            </div>   
+                        </form>                  
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<!-- Delete -->
+<div class="modal fade" id="delete">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><b>Xóa Danh Mục</b></h4>
+            </div>
+            <div class="modal-body">
+                    
+                    <form action="#" class="form-horizontal" id="delete_camp" method="POST">
+
+                        <!-- <input type="hidden" class="catid" name="id"> -->
+                        <div class="text-center">
+                            <p>Bạn có muốn xóa camp</p>
+                            <h2 class="bold campname"></h2>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2">
+                                <button type="submit" class="btn btn-danger btn-flat btn-right" name="del"><i class="fa fa-trash-o"></i> Xóa</button>                                     
+                            </div>
+                        </div> 
+                    </form>
+            </div>                
+        </div>
+    </div>
+</div>

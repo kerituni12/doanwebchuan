@@ -1,0 +1,158 @@
+<div class="modal fade" id="addnew">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><b>Thêm Thành Viên</b></h4>
+            </div>
+            <div class="modal-body">
+                <form action="/admin/users/add-user" class="form-horizontal" method="POST">
+
+                    <div class="form-group">
+                        <label class="col-sm-3 col-lg-2 control-label">Tên nhân viên</label>
+                        <div class="col-sm-9 col-lg-10 controls">
+                            <input type="text" id="add-name" class="form-control" name="name" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 col-lg-2 control-label">Số điện thoại</label>
+                        <div class="col-sm-9 col-lg-10 controls">
+                            <input type="text" id="add-phone" class="form-control" name="phone" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 col-lg-2 control-label">Địa chỉ</label>
+                        <div class="col-sm-9 col-lg-10 controls">
+                            <input type="text" id="add-address" class="form-control" name="address" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 col-lg-2 control-label">Email</label>
+                        <div class="col-sm-9 col-lg-10 controls">
+                            <input type="text" id="add-email" class="form-control" name="email" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 col-lg-2 control-label">Vai trò</label>
+                        <div class="col-sm-9 col-lg-10 controls">
+                            <select class="form-control" data-placeholder="Choose a Category" tabindex="1" name="role">
+                                <option value="admin">Admin</option>
+                                <option value="employee">Nhân viên</option>
+                                <option value="customer">Khác hàng</option>
+                                <option value="provider">Nhà cung cấp</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2">
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-check"></i> Lưu</button>
+                            <button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal"><i
+                                    class="fa fa-close"></i> Đóng</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit -->
+<div class="modal fade" id="edit">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><b>Sửa Thành Viên</b></h4>
+            </div>
+            <div class="modal-body">
+                <form action="#" id="edit-form" class="form-horizontal" method="POST">
+
+                    <div class="form-group">
+                        <label class="col-sm-3 col-lg-2 control-label">Tên nhân viên</label>
+                        <div class="col-sm-9 col-lg-10 controls">
+                            <input type="text" id="edit-name" class="form-control" name="name" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 col-lg-2 control-label">Số điện thoại</label>
+                        <div class="col-sm-9 col-lg-10 controls">
+                            <input type="text" id="edit-phone" class="form-control" name="phone" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 col-lg-2 control-label">Địa chỉ</label>
+                        <div class="col-sm-9 col-lg-10 controls">
+                            <input type="text" id="edit-address" class="form-control" name="address" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 col-lg-2 control-label">Email</label>
+                        <div class="col-sm-9 col-lg-10 controls">
+                            <input type="text" id="edit-email" class="form-control" name="email" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 col-lg-2 control-label">Vai trò</label>
+                        <div class="col-sm-9 col-lg-10 controls">
+                            <select class="form-control" data-placeholder="Choose a Category" tabindex="1" name="role">
+                                <option value="admin">Admin</option>
+                                <option value="employee">Nhân viên</option>
+                                <option value="customer">Khác hàng</option>
+                                <option value="provider">Nhà cung cấp</option>
+                            </select>
+                        </div>
+                    </div>
+                    <img src="" alt="">
+                    <div class="form-group">
+                        <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2">
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-check"></i> Lưu</button>
+                            <button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal"><i
+                                    class="fa fa-close"></i> Đóng</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete -->
+<div class="modal fade" id="delete">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><b>Xóa Thành Viên</b></h4>
+            </div>
+            <div class="modal-body">
+
+                <form action="#" class="form-horizontal" id="delete-form" method="POST">
+
+                    <!-- <input type="hidden" class="catid" name="id"> -->
+                    <div class="text-center">
+                        <p>Bạn có muốn thành viên</p>
+                        <h2 class="bold" id="del-name"></h2>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2">
+                            <button type="submit" class="btn btn-danger btn-flat btn-right" name="del"><i
+                                    class="fa fa-trash-o"></i> Xóa</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

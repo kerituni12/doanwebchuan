@@ -1,0 +1,102 @@
+<!-- Add -->
+<div class="modal fade" id="addnew">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title"><b>Thêm Danh mục</b></h4>
+                </div>
+                <div class="modal-body">                        
+                        <form action="/admin/categories/add-category" class="form-horizontal"  method="POST">
+                                <div class="form-group">
+                                    <label class="col-sm-3 col-lg-2 control-label">Tên danh mục</label>
+                                    <div class="col-sm-9 col-lg-10 controls">
+                                        <input type="text" class="form-control catname"   class="form-control" name="title"/>                                                                          
+                                    </div>
+                                </div>   
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 col-lg-2 control-label">Slug</label>
+                                    <div class="col-sm-9 col-lg-10 controls">
+                                        <input type="text" class="form-control" name="slug" />                                        
+                                    </div>
+                                </div> 
+                                <div class="form-group">
+                                    <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2">
+                                        <button type="submit" class="btn btn-success btn-flat btn-right" name="edit"><i class="fa fa-check-square-o"></i> Cập Nhật</button>                                     
+                                    </div>
+                                </div>    
+                            </form>                  
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+<!-- Edit -->
+<div class="modal fade" id="edit">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title"><b>Chỉnh sửa Danh mục</b></h4>
+                </div>
+                <div class="modal-body">                        
+                        <form action="#" class="form-horizontal" id="edit_cate" method="POST">
+                                <div class="form-group">
+                                    <label class="col-sm-3 col-lg-2 control-label">Tên danh mục</label>
+                                    <div class="col-sm-9 col-lg-10 controls">
+                                        <input type="text" class="form-control catname"  id="edit_name" class="form-control" name="title"/>                                                                          
+                                    </div>
+                                </div>   
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 col-lg-2 control-label">Slug</label>
+                                    <div class="col-sm-9 col-lg-10 controls">
+                                        <input type="text" id="edit_slug" class="form-control" name="slug" />                                        
+                                    </div>
+                                </div> 
+                                <div class="form-group">
+                                    <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2">
+                                        <button type="submit" class="btn btn-success btn-flat btn-right" name="edit"><i class="fa fa-check-square-o"></i> Cập Nhật</button>                                     
+                                    </div>
+                                </div>    
+                            </form>                  
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+
+    <!-- Delete -->
+    <div class="modal fade" id="delete">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title"><b>Xóa Danh Mục</b></h4>
+                </div>
+                <div class="modal-body">
+                        
+                        <form action="#" class="form-horizontal" id="delete_cate" method="POST">
+
+                            <!-- <input type="hidden" class="catid" name="id"> -->
+                            <div class="text-center">
+                                <p>Bạn có muốn xóa danh mục</p>
+                                <h2 class="bold catname"></h2>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2">
+                                    <button type="submit" class="btn btn-danger btn-flat btn-right" name="del"><i class="fa fa-trash-o"></i> Xóa</button>                                     
+                                </div>
+                            </div> 
+                        </form>
+                </div>                
+            </div>
+        </div>
+    </div>
+    

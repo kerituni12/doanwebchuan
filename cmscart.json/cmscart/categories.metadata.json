@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"cmscart.categories"}],"uuid":"2c3516d48bb546c69313d7c60032b7eb"}
