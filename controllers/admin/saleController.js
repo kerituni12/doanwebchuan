@@ -40,65 +40,42 @@ exports.index = async function (req, res) {
     //     })
 
     // });
-//m ko dùng phím tắt đc run lai giúp
+
 
     // async await
-    //console.time('start')
-     //check momery di ? em khong biet
-    // let products = await Product.find().exec();
-     //let emp = await User.find().exec();
     
-// console.timeEnd('start')
-// res.send([products, emp]);
+    let sale = await Sale.find();
+    let count = await User.count();
+    let products = await Product.find();
+    let emp = await User.find();
+    
+    res.render('admin/sale', {
+        sale: sale,
+        count: count,
+        products: products,
+        emp: emp
+    });
 
-    // res.render('admin/sale', {
-    //     sale: sale,
-    //     count: count,
-    //     products: products,
-    //     emp: emp
-    // });
 
-//save đi
-//run thư x
-
-// khong duoc thi de e dung async await cung duoc a. ton time a qua
-//thương thì Promise.all chạy nhanh hơn wtf
-//cho m 10' nua
-//ok a
-
-    //  res.send([count, products, emp, sale]);
+   //  res.send([count, products, emp, sale]);
 
     // [Sale.count(), Sale.find().exec()] -> fast
     // [Sale.find().exec(), Product.find().exec()] -> fast
     // [Sale.count(), Sale.find().exec(), Product.find().exec()] -> 2 ~ 3 giây
 
-    // Delay 2 - 3 s ; 
-    //biet vi sao bi chua
-    // e khong biet nhung chi biet > 2 la no cham :(
-        //Promsie.all chay song song nên nó có thể ngốn RAM trong lúc mông queyry
-        //tách ra sẽ nhanh hơn so vơi await 
-        // a chi em check ram voi
-        //Thường thì mongodb sẽ chiếm 50% RAM
-        // c.on a e test sau . a ngu som di a
-        //ok bye
-    console.time("start")
-    const value = await Promise.all([Sale.count().exec(), Sale.find().exec(), Product.find().exec(), User.find().exec()]);
+    // Debug promis all
+
+    // console.time("start")
+    // const value = await Promise.all([Sale.count().exec(), Sale.find().exec(), Product.find().exec(), User.find().exec()]);
     // const value1 = await Promise.all([]);
-    console.timeEnd('start')
-    res.send([value])
-        //.then(value => res.send(value))
-//comment d
-    // .then(([count, sale, products, emp]) => res.render('admin/sale', {
-    //     count: count,
-    //     sale: sale,        
-    //     products: products,
-    //     emp: emp
-    // }))
+    // console.timeEnd('start')
+    // res.send([value])
+       
 };
 
 exports.add_sale = function (req, res) {
 
-    // console.log(req.body);
+    console.log('req body0', req.body);
     req.checkBody('phone', 'Số điện thoại không được rỗng').notEmpty();
 
     let name_kh = req.body.name_kh;
@@ -118,25 +95,27 @@ exports.add_sale = function (req, res) {
         [key]: count[index]
     }), {});
 
+    console.log('product', merged);
+
     let errors = req.validationErrors();
 
     if (errors) {
-        req.flash('danger', errors);
+        req.app.locals.errors = errors;
         res.redirect('/admin/sales');
     } else {
         let sale = new Sale({
             user_mem: name_kh,
             phone: phone,
             user_emp: name_nv,
-            product: merged,
+            items: merged,
             total: total,
             status: 0
         });
-
+        req.app.locals.errors =null;
         sale.save(function (err) {
             if (err)
                 return console.log(err);
-            req.flash('success', 'sale đã được thêm');
+            req.flash('success', 'Đơn hàng đã được thêm');
             res.redirect('/admin/sales');
         });
     }
@@ -157,7 +136,7 @@ exports.delete_sale_post = function (req, res) {
     Sale.findByIdAndRemove(req.params.id, function (err) {
         if (err)
             return console.log(err);
-        req.flash('success', 'sale đã được xóa!');
+        req.flash('success', 'Đơn hàng đã được xóa!');
         res.redirect('/admin/sales');
     });
 };

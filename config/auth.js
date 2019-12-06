@@ -1,17 +1,17 @@
-exports.isUser = function(req, res, next) {
-    if (req.isAuthenticated()) {
-        next();
-    } else {
-        req.flash('danger', 'Please log in.');
-        res.redirect('/users/login');
-    }
-}
+// exports.isUser = function(req, res, next) {
+//     if (req.isAuthenticated()) {
+//         next();
+//     } else {
+//         req.flash('danger', 'Vui lòng đăng nhập');
+//         res.redirect('/users/login');
+//     }
+// }
 
 exports.isAdmin = function(req, res, next) {    
     if (req.isAuthenticated() && req.user.role == 'admin') {
         next();
     } else {
-       req.flash('danger', 'Please log in admin.');
+       req.flash('danger', 'Vui lòng đăng nhập bằng tài khoản admin.');
        return res.redirect('/users/login');   
     }
     

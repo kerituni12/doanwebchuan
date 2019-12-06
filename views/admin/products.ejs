@@ -90,6 +90,7 @@
                         else
                         $('#noimage').attr('src', `/product_images/${id}/${res.image}`);
                         $('#edit_desc').val(res.desc);
+                        $(".category select").val(res.category).prop('selected', true);
                         $('#edit-form').attr('action', '/admin/products/edit-product/' +
                             id);
                         console.log('run');

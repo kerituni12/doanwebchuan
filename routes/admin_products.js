@@ -13,9 +13,9 @@ router.get('/edit-product/:id', isAdmin, productsController.edit_product_get);
 
 router.post('/edit-product/:id', productsController.edit_product_post);
 
-router.post('/product-gallery/:id', productsController.product_gallery);
+// router.post('/product-gallery/:id', productsController.product_gallery);
 
-router.get('/delete-image/:image', isAdmin, productsController.del_img);
+// router.get('/delete-image/:image', isAdmin, productsController.del_img);
 
 router.post('/delete-product/:id', isAdmin, productsController.del_product);
 

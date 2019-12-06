@@ -47,23 +47,21 @@ dbMongo.on('err', console.error.bind(console, 'connect fail'));
   //  console.log('mongo connected');
 //});
 
+
 // Init app
 var app = express();
 const http = require("http").Server(app);
 const io = require("socket.io");
-
-
 socket = io(http);
-
 // Product.watch().on('change', (change) => {
 //     console.log(JSON.stringify(change)); // You could parse out the needed info and send only that data. 
 //     io.emit('changeData', change);
 // }); 
-
 socket.on('connection', function () {
     console.log(' io connected');
 });
 global.loopMessage = null;
+
 
 // View engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -75,18 +73,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Set global errors variable
 app.locals.errors = null;
 app.locals.sessionchat = null;
-
-// Get Page Model
-var Page = require('./models/page');
-
-// Get all pages to pass to header.ejs
-Page.find({}).sort({sorting: 1}).exec(function (err, pages) {
-    if (err) {
-        console.log(err);
-    } else {
-        app.locals.pages = pages;
-    }
-});
 
 // Get Category Model
 var Category = require('./models/category');
@@ -176,17 +162,12 @@ app.get('*', function(req,res,next) {
 });
 
 // Set routes 
-var pages = require('./routes/pages.js');
-var products = require('./routes/products.js');
-var cart = require('./routes/cart.js');
 var users = require('./routes/users.js');
-var adminPages = require('./routes/admin_pages.js');
 var adminCategories = require('./routes/admin_categories.js');
 var adminProducts = require('./routes/admin_products.js');
 var adminUsers = require('./routes/admin_users.js');
 var adminCamps = require('./routes/admin_camps.js');
 var adminSales = require('./routes/admin_sales.js');
-var facebookServices = require('./routes/fb');
 app.get('/webhook', fbService.handleVerifyServer);
 app.post('/webhook', fbService.handleWebhookEvent);
 app.get('/admin/chart', function (req, res) {
@@ -194,17 +175,13 @@ app.get('/admin/chart', function (req, res) {
 });
 
 
-app.use('/admin/pages', adminPages);
 app.use('/admin/categories', adminCategories);
 app.use('/admin/products', adminProducts);
 app.use('/admin/users', adminUsers);
-app.use('/products', products);
-app.use('/cart', cart);
 app.use('/users', users);
 app.use('/admin/camps', adminCamps);
 app.use('/admin/sales', adminSales);
 // app.use('/', res);
-app.use('/fb', facebookServices);
 app.use('/', function (req, res) {
     if (typeof req.user != 'undefined' && (req.user.role ==  'admin')) return res.redirect('/admin/users');
     console.log(req.user);

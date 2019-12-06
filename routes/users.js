@@ -27,10 +27,10 @@ router.post('/register', function (req, res) {
     var password = req.body.password;
     var password2 = req.body.password2;
 
-    req.checkBody('name', 'Name is required!').notEmpty();
-    req.checkBody('email', 'Email is required!').isEmail();    
-    req.checkBody('password', 'Password is required!').notEmpty();
-    req.checkBody('password2', 'Passwords do not match!').equals(password);
+    req.checkBody('name', 'Vui lòng nhập tên').notEmpty();
+    req.checkBody('email', 'Vui lòng nhập email').isEmail();    
+    req.checkBody('password', 'Vui lòng nhập mật khẩu').notEmpty();
+    req.checkBody('password2', 'Vui lòng nhập lại mật khẩu').equals(password);
 
     var errors = req.validationErrors();
 
@@ -46,7 +46,7 @@ router.post('/register', function (req, res) {
                 console.log(err);
 
             if (user) {
-                req.flash('danger', 'Username exists, choose another!');
+                req.flash('danger', 'Người dùng đã tồn tại');
                 res.redirect('/users/register');
             } else {
                 var user = new User({
@@ -68,7 +68,7 @@ router.post('/register', function (req, res) {
                             if (err) {
                                 console.log(err);
                             } else {
-                                req.flash('success', 'You are now registered!');
+                                req.flash('success', 'Bạn đã đăng kí thành công');
                                 res.redirect('/users/login')
                             }
                         });
@@ -122,7 +122,7 @@ router.get('/logout', function (req, res) {
 
     req.logout();
     
-    req.flash('success', 'You are logged out!');
+    req.flash('success', 'Bạn đã đăng xuất!');
     res.redirect('/users/login');
 
 });

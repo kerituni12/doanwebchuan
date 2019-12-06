@@ -17,9 +17,10 @@ exports.index = function (req, res) {
 
 exports.add_user = function (req, res) {
 
+    
     req.checkBody('name', 'Tên  không được rỗng.').notEmpty();
     req.checkBody('phone', 'Số điện thoại không được rỗng.').notEmpty();
-    req.checkBody('address', 'Địa chỉ không được rỗng.').notEmpty();
+    // req.checkBody('address', 'Địa chỉ không được rỗng.').notEmpty();
     req.checkBody('role', 'Vai trò không được rỗng.').notEmpty();
     req.checkBody('email', 'Email không được rỗng.').notEmpty();
 
@@ -96,7 +97,7 @@ exports.edit_user_post = function (req, res) {
     req.checkBody('name', 'Tên  không được rỗng.').notEmpty();
     req.checkBody('phone', 'Số điện thoại không được rỗng.').notEmpty();
     req.checkBody('role', 'Vai trò không được rỗng.').notEmpty();
-    req.checkBody('address', 'Địa chỉ không được rỗng.').notEmpty();
+    // req.checkBody('address', 'Địa chỉ không được rỗng.').notEmpty();
     req.checkBody('email', 'Email không được rỗng.').notEmpty();
 
     var name = req.body.name;

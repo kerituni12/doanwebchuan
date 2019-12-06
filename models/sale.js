@@ -7,7 +7,7 @@ let SaleSchema = mongoose.Schema({
     items:[],
     date: Date,
     total: Number,    
-    status: String
+    status: Number
 })
 
 let Camp = module.exports = mongoose.model('Sale', SaleSchema)
