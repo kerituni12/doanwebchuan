@@ -161,7 +161,7 @@ async function facebook(sender_psid, mess) {
       "recipient": {
         "id": sender_psid
       },
-      "message": {"text": "a"}
+      "message": {"text": mess}
     }
     
     results = await rp({
