@@ -75,7 +75,7 @@ exports.index = async function (req, res) {
 
 exports.add_sale = function (req, res) {
 
-    console.log('req body0', req.body);
+    // console.log('req body0', req.body);
     req.checkBody('phone', 'Số điện thoại không được rỗng').notEmpty();
 
     let name_kh = req.body.name_kh;
@@ -109,6 +109,7 @@ exports.add_sale = function (req, res) {
             user_emp: name_nv,
             items: merged,
             total: total,
+            date: new Date(),
             status: 0
         });
         req.app.locals.errors =null;
@@ -140,3 +141,23 @@ exports.delete_sale_post = function (req, res) {
         res.redirect('/admin/sales');
     });
 };
+
+exports.total = async function (req, res) {
+
+    // chua toi uu
+    let arr = [];    
+        for (let i = 1; i < 12; i ++) {
+            let sum = 0;
+            await Sale.find(function(err, sale) {   
+                sale.forEach((v, j) => {                   
+                    if(v.date.getFullYear() == 2019 && v.date.getMonth() == i) {
+                        sum += v.total;
+                        }
+                })             
+                
+            })            
+            arr.push(sum);
+        }
+
+    res.send(arr);
+}

@@ -196,17 +196,17 @@ app.use('/', function (req, res) {
 
 //const port = process.env.PORT ||3001;
 
-const httpsOptions = {
-    cert: fs.readFileSync(path.join(__dirname, 'ssl', 'server.crt')),
-    key: fs.readFileSync(path.join(__dirname, 'ssl', 'server.key')),
-}
-var port = 3001;
-https.createServer(httpsOptions, app).listen(port, function(){
-    console.log('Server started on port ' + port);
-})
-
-// // server https
-// const port = process.env.PORT ||3001;
-// app.listen(port, function () {
+// const httpsOptions = {
+//     cert: fs.readFileSync(path.join(__dirname, 'ssl', 'server.crt')),
+//     key: fs.readFileSync(path.join(__dirname, 'ssl', 'server.key')),
+// }
+// var port = 3001;
+// https.createServer(httpsOptions, app).listen(port, function(){
 //     console.log('Server started on port ' + port);
-// });
+// })
+
+// server https
+const port = process.env.PORT ||3001;
+app.listen(port, function () {
+    console.log('Server started on port ' + port);
+});

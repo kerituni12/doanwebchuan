@@ -152,9 +152,7 @@ exports.send_camp = function (req, res) {
     })
 }
 
-function handleMessage (type, sender_psid, mess) {
-  
-}
+
 
 async function facebook(sender_psid, mess) {
     var results = {};
@@ -182,9 +180,11 @@ async function facebook(sender_psid, mess) {
     return results;
   }
 
+// https://api.telegram.org/bot[BOT_API_KEY]/sendMessage?chat_id=-[MY_CHANNEL_NAME]&text=[MY_MESSAGE_TEXT]
+
 function telegram(sender_psid, mess) {
     let request_body = {
-        "chat_id": sender_psid,
+        "chat_id": `-${sender_psid}`,
         "text": mess
       }
    
@@ -196,7 +196,7 @@ function telegram(sender_psid, mess) {
         if (!err) {
           console.log('message sent! telegram ');
         } else {
-          console.error("Unable to send message:" + err);
+          console.error("Không thể gửi mess" + err);
         }
       });
 }

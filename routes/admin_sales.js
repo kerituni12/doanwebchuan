@@ -13,6 +13,8 @@ router.post('/add-sale',  saleController.add_sale);
 
 router.get('/edit-sale/:id',  saleController.edit_sale_get);
 
+router.get('/total',  saleController.total);
+
 router.post('/delete-sale/:id',  saleController.delete_sale_post);
 
 

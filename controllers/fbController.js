@@ -8,9 +8,16 @@ const puppeteer = require('puppeteer');
 
 var Mess = require('../models/mess');
 var User = require('../models/user');
+var Sale = require('../models/sale');
 
-const PAGE_ACCESS_TOKEN = 'EAAHh0ZCcqftcBAO2hiY5CsZCX0Ep55XnwUV2pXBjuK7iY5r7Gwzj0AEjAAtFbkRWV6O6NlwBcbit7E91OEZB3v5zME2A1qLMtTfl7isYftC2n930YRvTbBABdmnWMf1A0rmOZByOiCmBZCOkEfZBtgcsQPlMUPAPZCbSG9nNZCFeg9CpPlapnGSH';
-//Handler Message
+// const PAGE_ACCESS_TOKEN = 'EAAHh0ZCcqftcBAML83HJONXMoWGSHsRbia7ls8fqDmKv4TqA0nGCs2YgSyk9uNgrl7g4yyNGOklrLhJI0zjcK5eaDGFChvVZBd1PoSqkGcxCdgT2lIfC7KD9giVEMDQaTz8t0wZBum5hAQJrqxcu4UHy4RMDkjZAONiiBtUbqwZDZD';
+
+//Handler LoopMessage
+// B1 : check mail = true -> save temp pass and request pass 
+// B2 : hash pass anh check with temp pass , check isadmin
+// B3 : if pass = true -> login success -> reset loop = 0
+
+
 function handleLoopMessage(sender_psid, received_message) {
   let response;
   Mess.findOne({
@@ -18,7 +25,7 @@ function handleLoopMessage(sender_psid, received_message) {
   }, function (err, id) {
     if (id) {
       switch (id.loop) {
-        case 1:
+        case 1: // 
           User.findOne({
             email: received_message.text
           }, function (err, user) {
@@ -36,7 +43,7 @@ function handleLoopMessage(sender_psid, received_message) {
               });
             }else {
               response = {
-                "text": "ten dang nhap khong dung, vui long nhap lai"
+                "text": "Tên đăng nhập không đúng vui lòng nhập lại"
               }
               callSendAPI(sender_psid, response);
             } 
@@ -73,7 +80,7 @@ function handleLoopMessage(sender_psid, received_message) {
                            
               } else {
                 response = {
-                  "text": "mat khau khong  dung"
+                  "text": "Vui lòng nhập lại password"
                 }
                 callSendAPI(sender_psid, response);                
               }
@@ -87,10 +94,10 @@ function handleLoopMessage(sender_psid, received_message) {
               "type": "template",
               "payload": {
                 "template_type": "button",
-                "text": "Try the postback button!",
+                "text": "Nhấn button to login !",
                 "buttons": [{
                   "type": "postback",
-                  "title": "dang trong loop mess",
+                  "title": "Loop mess ",
                   "payload": "login"
                 }]
               }
@@ -103,6 +110,9 @@ function handleLoopMessage(sender_psid, received_message) {
   })
 
 }
+
+//  send chart to mess 
+
 
 function handleMessage(sender_psid, received_message) {
   let response;
@@ -165,13 +175,15 @@ function handleMessage(sender_psid, received_message) {
   }
 }
 
+// Start event login 
+
 function handleLogin (sender_psid){
   response = {
     "attachment": {
       "type": "template",
       "payload": {
         "template_type": "button",
-        "text": "Try the postback button!",
+        "text": "Vui lòng nhấn button để đăng nhập",
         "buttons": [{
           "type": "postback",
           "title": "login đi",
@@ -183,6 +195,7 @@ function handleLogin (sender_psid){
   callSendAPI(sender_psid, response);
   return;
 }
+
 //Handler Postback
 function handlePostback(sender_psid, received_postback) {
 
@@ -207,13 +220,14 @@ function handlePostback(sender_psid, received_postback) {
     })
     return;
   } else if (payload === 'no') {
-    response = {
-      'text': 'Oops, try sending another image.'
-    }
+    // response = {
+    //   'text': ' ...'
+    // }
   }
 }
 
 // Messenger Send API
+
 function callSendAPI(sender_psid, response = 'aaa') {
 
   // Construct the message body
@@ -228,24 +242,40 @@ function callSendAPI(sender_psid, response = 'aaa') {
   request({
     "uri": "https://graph.facebook.com/v2.6/me/messages",
     "qs": {
-      "access_token": PAGE_ACCESS_TOKEN
+      "access_token": process.env.FACEBOOK_TOKEN
     },
     "method": "POST",
     "json": request_body
   }, (err, res, body) => {
     if (!err) {
-      console.log('message sent!')
+      console.log('Mess đã được gửi!')
     } else {
-      console.error("Unable to send message:" + err);
+      console.error("Không thể gửi mess:" + err);
     }
   });
 }
 
 
 // Send img chart
-function sendChart(chart, sender_psid) {
+
+async function sendChart(chart, sender_psid) {
+  
   let response;
-  const htmlString = `<html>
+  let arr = [];    
+        for (let i = 1; i < 12; i ++) {
+            let sum = 0;
+            await Sale.find(function(err, sale) {   
+                sale.forEach((v, j) => {                   
+                    if(v.date.getFullYear() == 2019 && v.date.getMonth() == i) {
+                        sum += v.total;
+                        }
+                })             
+                
+            })            
+            arr.push(sum);
+        }
+
+  const htmlString =  `<html>
   <head>
       <title></title>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
@@ -264,7 +294,7 @@ function sendChart(chart, sender_psid) {
             labels: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
             datasets: [{
                 label: '${chart}',
-                data: [12, 19, 3, 5, 2, 3],
+                data: [${arr}],
                 borderWidth: 1
             }]
         },
@@ -281,6 +311,10 @@ function sendChart(chart, sender_psid) {
     </script>
   </html>`;
 
+  // console.log('html', htmlString);
+
+  // create img with puppeteer library and send chart 
+
   (async () => {
     const browser = await puppeteer.launch({
       args: ['--no-sandbox']
@@ -296,14 +330,14 @@ function sendChart(chart, sender_psid) {
       "attachment": {
         "type": "image",
         "payload": {
-          "url": "https://91602fd1.ngrok.io/images/" + chart + ".png",
+          "url": "https://d8eb2a41.ngrok.io/images/" + chart + ".png",
           "is_reusable": true
         }
       }
     }
 
     callSendAPI(sender_psid, response);
-    console.log('ben trong')
+    // console.log('ben trong')
     return;
   })()
 }

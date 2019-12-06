@@ -12,8 +12,8 @@
                 </div>
             </div>
 
-            <div class="box-content">
-              <canvas id="myChart" width="400" height="400"></canvas>
+            <div class="box-content" style="max-width: 1120px; margin: auto;">
+                <canvas id="myChart" width="600" height="400"></canvas>
             </div>
         </div>
     </div>
@@ -24,28 +24,41 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
 <script>
-  var ctx = document.getElementById('myChart').getContext('2d');
-  var myChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-          labels: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
-          datasets: [{
-              label: 'Sale',
-              data: [12, 19, 3, 5, 2, 3],
-              borderWidth: 1
-          }]
-      },
-      options: {
-          scales: {
-              yAxes: [{
-                  ticks: {
-                      beginAtZero: true
-                  }
-              }]
-          }
-      }
-  });
-  </script>
+    $.ajax({
+        type: 'GET',
+        url: '/admin/sales/total',
+        dataType: 'json',
+        success: function (response) {
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct",
+                        "Nov", "Dec"
+                    ],
+                    datasets: [{
+                        label: 'Sale',
+                        data: response,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+
+        }
+
+
+
+    });
+</script>
 </body>
 
 <!-- Mirrored from thetheme.io/flaty/ by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 27 Sep 2019 07:16:48 GMT -->
