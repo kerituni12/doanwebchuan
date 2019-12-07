@@ -146,7 +146,7 @@ exports.total = async function (req, res) {
 
     // chua toi uu
     let arr = [];    
-        for (let i = 1; i < 12; i ++) {
+        for (let i = 0; i < 12; i ++) {
             let sum = 0;
             await Sale.find(function(err, sale) {   
                 sale.forEach((v, j) => {                   

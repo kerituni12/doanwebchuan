@@ -17,7 +17,7 @@ const Product = require('./models/product');
 
 //mongoose connection
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/cmscart');
-mongoose.set('debug', true);
+// mongoose.set('debug', true);
 var dbMongo = mongoose.connection;
 dbMongo.on('err', console.error.bind(console, 'connect fail'));
 //dbMongo.once('open',function () {

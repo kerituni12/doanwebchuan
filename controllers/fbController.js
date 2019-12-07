@@ -117,42 +117,55 @@ function handleLoopMessage(sender_psid, received_message) {
 function handleMessage(sender_psid, received_message) {
   let response;
   
-  switch (received_message.text) {
-    case 't1':
-      sendChart('chart1', sender_psid);
-      return;
-    case 't2':
-      sendChart('chart2', sender_psid);
-      return;
-    case 't3':
-      sendChart('chart3', sender_psid);
-      return;
-    case 't4':
-      sendChart('chart4', sender_psid);
-      return;
-    case 't5':
-      sendChart('chart5', sender_psid);
-      return;
-    case 't6':
-      sendChart('chart6', sender_psid);
-      return;
-    case 't7':
-      sendChart('chart7', sender_psid);
-      return;
-    case 't8':
-      sendChart('chart8', sender_psid);
-      return;
-    case 't9':
-      sendChart('chart9', sender_psid);
-      return;
-    case 't10':
-      sendChart('chart10', sender_psid);
-      return;
-    case 't11':
-      sendChart('chart11', sender_psid);
-      return;
-    case 't12':
-      sendChart('chart12', sender_psid);
+  switch (received_message.text.toLowerCase()) {
+    case 'biểu đồ':
+        sendChart('chart', sender_psid);
+        return;
+
+    // Chart for month 
+
+    // case 't1':
+    //   sendChart('chart1', sender_psid);
+    //   return;
+    // case 't2':
+    //   sendChart('chart2', sender_psid);
+    //   return;
+    // case 't3':
+    //   sendChart('chart3', sender_psid);
+    //   return;
+    // case 't4':
+    //   sendChart('chart4', sender_psid);
+    //   return;
+    // case 't5':
+    //   sendChart('chart5', sender_psid);
+    //   return;
+    // case 't6':
+    //   sendChart('chart6', sender_psid);
+    //   return;
+    // case 't7':
+    //   sendChart('chart7', sender_psid);
+    //   return;
+    // case 't8':
+    //   sendChart('chart8', sender_psid);
+    //   return;
+    // case 't9':
+    //   sendChart('chart9', sender_psid);
+    //   return;
+    // case 't10':
+    //   sendChart('chart10', sender_psid);
+    //   return;
+    // case 't11':
+    //   sendChart('chart11', sender_psid);
+    //   return;
+    // case 't12':
+    //   sendChart('chart12', sender_psid);
+    //   return;
+    case 'logout':     
+      Mess.findOneAndRemove({id:sender_psid}, function (err) {
+          if (err)
+              return console.log(err);
+              callSendAPI(sender_psid, {"text": "đã logout"});
+      });  
       return;
     case 'login':
       response = {
@@ -160,7 +173,7 @@ function handleMessage(sender_psid, received_message) {
           "type": "template",
           "payload": {
             "template_type": "button",
-            "text": "Try the postback button!",
+            "text": "Vui lòng nhấn button để đăng nhập!",
             "buttons": [{
               "type": "postback",
               "title": "login đi",
@@ -262,7 +275,7 @@ async function sendChart(chart, sender_psid) {
   
   let response;
   let arr = [];    
-        for (let i = 1; i < 12; i ++) {
+        for (let i = 0; i < 12; i ++) {
             let sum = 0;
             await Sale.find(function(err, sale) {   
                 sale.forEach((v, j) => {                   
@@ -330,7 +343,7 @@ async function sendChart(chart, sender_psid) {
       "attachment": {
         "type": "image",
         "payload": {
-          "url": "https://d8eb2a41.ngrok.io/images/" + chart + ".png",
+          "url": "https://9448e64d.ngrok.io/images/" + chart + ".png",
           "is_reusable": true
         }
       }
