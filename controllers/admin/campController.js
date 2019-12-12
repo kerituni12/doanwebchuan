@@ -4,8 +4,14 @@ let Camp = require('../../models/camp');
 const request = require("request");
 const rp = require('request-promise');
 
-exports.index = function (req, res) {   
+const fs = require('fs');
+const readline = require('readline');
+const {google} = require('googleapis');
 
+const TOKEN_PATH = 'token.json';
+
+exports.index = function (req, res) {   
+    // console.log(req.user);
     Promise.all([Camp.count(), Camp.find().exec()]).then(([cout,camp]) => res.render('admin/camp', {
         camp: camp,
         count: cout
@@ -145,6 +151,15 @@ exports.send_camp = function (req, res) {
                 });
                 return;
             case 'gmail': 
+                gmail('kerituni123@gmail.com', 'kerituni123@gmail.com', camp.content, camp.content);
+                // camp.status = 1;
+                // camp.save(function (err) {
+                //     if (err)
+                //         return console.log(err);
+    
+                //     req.flash('success', 'Đã gửi!');
+                //     res.redirect('/admin/camps');
+                // });
                 return; 
             default:
                 return;
@@ -180,6 +195,7 @@ async function facebook(sender_psid, mess) {
     return results;
   }
 
+  exports.facebook = facebook;
 // https://api.telegram.org/bot[BOT_API_KEY]/sendMessage?chat_id=-[MY_CHANNEL_NAME]&text=[MY_MESSAGE_TEXT]
 
 function telegram(sender_psid, mess) {
@@ -201,3 +217,65 @@ function telegram(sender_psid, mess) {
       });
 }
 
+function gmail(from , to, subject, mess) {
+    fs.readFile('credentials.json', (err, content) => {
+        if (err) return console.log('Error loading client secret file:', err);
+        // Authorize a client with credentials, then call the Gmail API.
+        authorize(JSON.parse(content), sendmail, from, to, subject, mess);
+      });
+}
+
+exports.gmail = gmail;
+async function sendmail(auth, from, to, subject, mess) {
+    const gmail = google.gmail({version: 'v1', auth});
+
+    // UTF-8 encoding icon
+    
+    // const subject = '🤘 Hello 🤘';
+     const utf8Subject = `=?utf-8?B?${Buffer.from(subject).toString('base64')}?=`;
+    // let message = `${Buffer.from(mess).toString('base64')}`
+    // teamplate gmail
+    const messageParts = [
+      `From: CMS Team99 <${from}>`,
+      `To: <${to}>`,
+      'Content-Type: text/html; charset=UTF-8',
+      'MIME-Version: 1.0',
+      `Subject: ${utf8Subject}`,
+      '',
+      mess
+    ].join('\n');
+    // const message = messageParts.join('\n');
+  
+    // The body needs to be base64url encoded.
+    const encodedMessage = Buffer.from(messageParts)
+      .toString('base64')
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=+$/, '');
+  
+    const res = await gmail.users.messages.send({
+      userId: 'me',
+      requestBody: {
+        raw: encodedMessage,
+      },
+    });
+    console.log(res.data);
+    return res.data;
+  }
+
+ 
+
+  function authorize(credentials, callback, from, to, subject, mess) {
+    const {client_secret, client_id, redirect_uris} = credentials.installed;
+    const oAuth2Client = new google.auth.OAuth2(
+        client_id, client_secret, redirect_uris[0]);
+  
+    // Check if we have previously stored a token.
+    fs.readFile(TOKEN_PATH, (err, token) => {
+      if (err) return getNewToken(oAuth2Client, callback);
+      oAuth2Client.setCredentials(JSON.parse(token));
+      callback(oAuth2Client, from, to, subject, mess);
+    });
+  }
+
+  

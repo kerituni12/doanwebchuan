@@ -47,13 +47,13 @@ exports.index = async function (req, res) {
     let sale = await Sale.find();
     let count = await User.count();
     let products = await Product.find();
-    let emp = await User.find();
+    // let emp = await User.find();
     
     res.render('admin/sale', {
         sale: sale,
         count: count,
         products: products,
-        emp: emp
+        empName: req.user.name
     });
 
 
@@ -80,16 +80,18 @@ exports.add_sale = function (req, res) {
 
     let name_kh = req.body.name_kh;
     let content = req.body.content;
-    let name_nv = req.body.name_nv;
+    let name_nv = req.user.name;
     let phone = parseInt(req.body.phone);
     let product = req.body.product;
     let count = req.body.count;
     let total = parseFloat(req.body.total);
 
+    //if has one product convert to array
     if (!(product instanceof Array)) {
         product = [product];
         count = [count]
-    };
+    }else {}
+
     const merged = product.reduce((obj, key, index) => ({
         ...obj,
         [key]: count[index]
@@ -112,6 +114,17 @@ exports.add_sale = function (req, res) {
             date: new Date(),
             status: 0
         });
+        
+        for([slug, count] of Object.entries(merged)) {
+            Product.findOne({slug: slug}, function(err, prod) {
+                prod.count = prod.count - count;
+                prod.save(function (err) {
+                    if (err)
+                        return console.log(err);
+                });
+            })
+        }
+
         req.app.locals.errors =null;
         sale.save(function (err) {
             if (err)
@@ -143,14 +156,14 @@ exports.delete_sale_post = function (req, res) {
 };
 
 exports.total = async function (req, res) {
-
+//    console.log('year', req.params.year);
     // chua toi uu
     let arr = [];    
         for (let i = 0; i < 12; i ++) {
             let sum = 0;
             await Sale.find(function(err, sale) {   
                 sale.forEach((v, j) => {                   
-                    if(v.date.getFullYear() == 2019 && v.date.getMonth() == i) {
+                    if(v.date.getFullYear() == req.params.year && v.date.getMonth() == i) {
                         sum += v.total;
                         }
                 })             

@@ -63,6 +63,7 @@ module.exports = function (passport) {
 
         function (token, refreshToken, profile, done) {
             // asynchronous
+            // thực thi ngay khi stack trống mà k đưa vào event loop
             process.nextTick(function () {
 
                 User.findOne({
@@ -72,6 +73,8 @@ module.exports = function (passport) {
                         return done(err);
 
                     if (user) {
+
+                        // check user trước đó đăng kí bằng local or login facebook  
 
                         // if(user.facebook.id != null) return done(null, user); // user found, return that user
                         // else
@@ -131,11 +134,11 @@ module.exports = function (passport) {
 
         }));
 
-
+    //set data to session 
     passport.serializeUser(function (user, done) {
         done(null, user.id);
     });
-
+    // get data res to req.user
     passport.deserializeUser(function (id, done) {
         User.findById(id, function (err, user) {
             done(err, user);

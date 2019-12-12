@@ -241,7 +241,7 @@ function handlePostback(sender_psid, received_postback) {
 
 // Messenger Send API
 
-function callSendAPI(sender_psid, response = 'aaa') {
+async function callSendAPI(sender_psid, response = {'text': 'day la tin nhan mac dinh'}) {
 
   // Construct the message body
   let request_body = {
@@ -260,6 +260,7 @@ function callSendAPI(sender_psid, response = 'aaa') {
     "method": "POST",
     "json": request_body
   }, (err, res, body) => {
+    console.log('err', err)
     if (!err) {
       console.log('Mess đã được gửi!')
     } else {

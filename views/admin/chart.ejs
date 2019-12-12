@@ -11,7 +11,22 @@
                     <a data-action="close" href="#"><i class="fa fa-times"></i></a>
                 </div>
             </div>
+            <div class="box-tools pull-right">
+                <div class="form-group">
+                    <label>Chọn năm: </label>
+                    <select class="form-control input-sm" id="select_year">
 
+                        <option value="2018">2018</option>
+
+                        <option value="2019" selected>2019</option>
+
+                        <option value="2020">2020</option>
+
+                        <option value="2021">2021</option>
+
+                    </select>
+                </div>
+            </div>
             <div class="box-content" style="max-width: 1120px; margin: auto;">
                 <canvas id="myChart" width="600" height="400"></canvas>
             </div>
@@ -24,39 +39,66 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
 <script>
-    $.ajax({
-        type: 'GET',
-        url: '/admin/sales/total',
-        dataType: 'json',
-        success: function (response) {
-            var ctx = document.getElementById('myChart').getContext('2d');
-            var myChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct",
-                        "Nov", "Dec"
-                    ],
-                    datasets: [{
-                        label: 'Sale',
-                        data: response,
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }
+    // let year = new Date().getFullYear();
+
+    loadChart(2019);
+    var myChart;
+
+    function loadChart(year) {
+        $.ajax({
+            type: 'GET',
+            url: '/admin/sales/total/' + year,
+            dataType: 'json',
+            success: function (response) {
+                var ctx = document.getElementById('myChart').getContext('2d');
+                myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep",
+                            "Oct",
+                            "Nov", "Dec"
+                        ],
+                        datasets: [{
+                            label: 'Sale',
+                            data: response,
+                            borderWidth: 1,
+                            backgroundColor: [
+                                '#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231',
+                                '#911eb4', '#46f0f0', '#f032e6', '#bcf60c', '#fabebe',
+                                '#008080', '#e6beff'
+                            ],
                         }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
                     }
-                }
-            });
+                });
 
-        }
+            }
+        })
+    }
 
 
+    function removeData() {
+        myChart.data.labels = [];
 
+        myChart.data.datasets.forEach((dataset) => {
+            dataset.data.pop();
+        });
+        myChart.update();
+    }
+
+    $('#select_year').on('change', function () {
+
+        removeData();
+
+        loadChart(this.value);
     });
 </script>
 </body>

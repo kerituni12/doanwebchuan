@@ -7,15 +7,15 @@ var isAdmin = auth.isAdmin;
 var saleController = require('../controllers/admin/saleController');
 // var nsaleController = require('../controllers/saleController');
 
-router.get('/',  saleController.index);
+router.get('/', isAdmin, saleController.index);
 
-router.post('/add-sale',  saleController.add_sale);
+router.post('/add-sale', isAdmin, saleController.add_sale);
 
-router.get('/edit-sale/:id',  saleController.edit_sale_get);
+router.get('/edit-sale/:id', isAdmin, saleController.edit_sale_get);
 
-router.get('/total',  saleController.total);
+router.get('/total/:year', isAdmin, saleController.total);
 
-router.post('/delete-sale/:id',  saleController.delete_sale_post);
+router.post('/delete-sale/:id', isAdmin, saleController.delete_sale_post);
 
 
 // Exports

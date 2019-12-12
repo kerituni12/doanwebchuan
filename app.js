@@ -12,40 +12,47 @@ var fileUpload = require('express-fileupload');
 var passport = require('passport');
 const fbService = require('./services/fbService');
 const callSendAPI = require('./controllers/fbController').callSendAPI;
+const gmail = require('./controllers/admin/campController').gmail;
 const Product = require('./models/product');
-
+var auth = require('./config/auth');
+var isAdmin = auth.isAdmin;
 
 //mongoose connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/cmscart');
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/cmscart?replicaSet=rs0');
 // mongoose.set('debug', true);
 var dbMongo = mongoose.connection;
 dbMongo.on('err', console.error.bind(console, 'connect fail'));
-//dbMongo.once('open',function () {
-    //sao lai connect toi day lam gi
-    //const taskCollection = dbMongo.collection('products');
+dbMongo.once('open',function () {
+    
+    const taskCollection = dbMongo.collection('products');
 
-     //console.log(taskCollection); 
-    //   const changeStream = taskCollection.watch();
-    //   changeStream.on('change', (change) => {
+    //  console.log('taskCollection', taskCollection); 
+      const changeStream = taskCollection.watch();
+      changeStream.on('change', (change) => {
 
-    //     // console.log(change);
-           
-    //       if (change.operationType == 'update') {
-              
-    //         if(change.updateDescription.updatedFields.count <= 5 ) {
-    //             Product.findOne({id: change.documentKey._id}, function(err, p){
+         console.log('change', change);        
+         
+          if (change.operationType == 'update') {
+            
+            // console.log('run check update')
+            if(change.updateDescription.updatedFields.count <= 5 ) {
 
-    //                 if(err) console.log(err);
+                console.log('count nho hon 5')
+                Product.findOne({_id: change.documentKey._id}, function(err, p){
 
-    //                 if(p)
-    //                 callSendAPI('3020488171325993', {'text': `Vui lòng bổ sung ${p.title} cho kho`});
-    //             })
+                    if(err) console.log(err);
+
+                    // console.log('this is product', p);
+                    callSendAPI('3020488171325993', {'text': `Vui lòng bổ sung ${p.title} cho kho`});
+                    gmail('kerituni123@gmail.com', 'kerituni123@gmail.com', 'Cập nhật hàng hóa',`Vui lòng bổ sung ${p.title} cho kho` );
+                    //console.log('it's run');
+                })
                 
-    //         }else console.log(change.updateDescription);
-    //       }
-    //    });
-  //  console.log('mongo connected');
-//});
+            }else console.log('this is change update', change.updateDescription);
+          }
+       });
+   console.log('mongo connected');
+});
 
 
 // Init app
@@ -149,14 +156,15 @@ app.use(function (req, res, next) {
     next();
 });
 
+
+// Set session for passport and user
 // Passport Config
 require('./config/passport')(passport);
 // Passport Middleware
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('*', function(req,res,next) {
-   res.locals.cart = req.session.cart;
+app.get('*', function(req,res,next) {  
    res.locals.user = req.user || null;
    next();
 });
@@ -170,7 +178,7 @@ var adminCamps = require('./routes/admin_camps.js');
 var adminSales = require('./routes/admin_sales.js');
 app.get('/webhook', fbService.handleVerifyServer);
 app.post('/webhook', fbService.handleWebhookEvent);
-app.get('/admin/chart', function (req, res) {
+app.get('/admin/chart', isAdmin, function (req, res) {
     res.render('admin/chart');
 });
 

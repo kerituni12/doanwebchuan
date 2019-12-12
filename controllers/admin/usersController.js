@@ -25,7 +25,7 @@ exports.add_user = function (req, res) {
     req.checkBody('email', 'Email không được rỗng.').notEmpty();
 
     var name = req.body.name;
-    var username = name.replace(/\s+/g, '-').toLowerCase();
+    // var username = name.replace(/\s+/g, '-').toLowerCase();
     var phone = req.body.phone;
     var address = req.body.address;
     var email = req.body.email;
@@ -52,7 +52,7 @@ exports.add_user = function (req, res) {
                 var user = new User({
                     name: name,
                     email: email,
-                    username: username,
+                    // username: username,
                     password: password,
                     phone: phone,
                     address: address,
@@ -119,9 +119,7 @@ exports.edit_user_post = function (req, res) {
     } else {
         User.findOne({
             phone: phone,
-            _id: {
-                '$ne': id
-            }
+            
         }, function (err, user) {
             if (user) {
                 req.flash('danger', 'Người dùng đã tồn tại!');

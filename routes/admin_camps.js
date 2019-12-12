@@ -7,17 +7,17 @@ var isAdmin = auth.isAdmin;
 var campController = require('../controllers/admin/campController');
 // var ncampController = require('../controllers/campController');
 
-router.get('/',  campController.index);
+router.get('/', isAdmin, campController.index);
 
-router.post('/add-camp',  campController.add_camp);
+router.post('/add-camp', isAdmin, campController.add_camp);
 
-router.get('/edit-camp/:id',  campController.edit_camp_get);
+router.get('/edit-camp/:id', isAdmin, campController.edit_camp_get);
 
-router.post('/edit-camp/:id',  campController.edit_camp_post);
+router.post('/edit-camp/:id', isAdmin, campController.edit_camp_post);
 
-router.post('/delete-camp/:id',  campController.delete_camp_post);
+router.post('/delete-camp/:id', isAdmin, campController.delete_camp_post);
 
-router.post('/send-camp/:id', campController.send_camp)
+router.post('/send-camp/:id',isAdmin, campController.send_camp)
 
 // Exports
 module.exports = router;

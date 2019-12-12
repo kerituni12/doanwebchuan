@@ -13,7 +13,7 @@ exports.index = function (req, res) {
 
 exports.add_cate_post = function (req, res) {
 
-    req.checkBody('title', 'Title must have a value.').notEmpty();
+    req.checkBody('title', 'Tên danh mục không được rỗng.').notEmpty();
 
     var title = req.body.title;
     var slug = title.replace(/\s+/g, '-').toLowerCase();
@@ -58,6 +58,7 @@ exports.add_cate_post = function (req, res) {
 
 };
 
+// return data to client
 exports.edit_cate_get = function (req, res) {
     // param use for get value from router /:..
     Category.findById(req.params.id, function (err, category) {
@@ -88,9 +89,7 @@ exports.edit_cate_post = function (req, res) {
     } else {
         Category.findOne({
             slug: slug,
-            _id: {
-                '$ne': id
-            }
+            
         }, function (err, category) {
             if (category) {
                 req.flash('danger', 'Danh mục đã tồn tại');

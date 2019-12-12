@@ -13,7 +13,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 col-lg-2 control-label">Tên Khách hàng</label>
                                 <div class="col-sm-9 col-lg-10 controls">
-                                    <input type="text" class="form-control "   class="form-control" name="name_kh"/>                                                                          
+                                    <input type="text" class="form-control catname"   class="form-control" name="name_kh"/>                                                                          
                                 </div>
                             </div>   
                             <div class="form-group">
@@ -22,11 +22,29 @@
                                     <input type='number' class="form-control" name="phone" />                                        
                                 </div>
                             </div> 
-                           
-                            <div id="allProduct">
-                                
+                            <div class="form-group">
+                                <label class="col-sm-3 col-lg-2 control-label">Tên Nhân viên</label>
+                                <div class="col-sm-9 col-lg-10 controls">
+                                    <select class="form-control" name="name_nv">                               
+                                        <% emp.forEach(function(emp){ %>
+                                            <option value="<%= emp.name %>"><%= emp.name %></option>
+                                            <% }); %>
+                                    </select>                                                                         
+                                </div>
                             </div>
-                            
+                            <div class="form-group prod">
+                                <label class="col-sm-3 col-lg-2 control-label">Sản phẩm</label>
+                                <div class="col-sm-9 col-lg-4 controls">
+                                    <select class="form-control" name="product">                               
+                                        <% products.forEach(function(pro){ %>
+                                            <option value="<%= pro.slug %>" data-price="<%= pro.price%>"><%= pro.title %></option>
+                                            <% }); %>
+                                    </select>            
+                                </div>
+                                <div class="col-sm-9 col-lg-2 controls">
+                                    <input type="text" value="1" class="form-control catname" name="count">                                                                          
+                                </div>
+                            </div>
                             
                             <div class="form-group">
                                 <label class="col-sm-3 col-lg-2 control-label">Thành tiền</label>
@@ -37,8 +55,8 @@
                             <div class="form-group">
 
                                 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2">
-                                        <button onclick="cloneProduct()" type="button" class="btn btn-success btn-flat btn-left" ><i class="fa fa-check-square-o" ></i> Thêm</button>   
-                                        <!-- <button onclick="tong()" type="button" class="btn btn-success btn-flat " ><i class="fa fa-check-square-o" ></i> Thành tiền</button>      -->
+                                        <button onclick="cloneQuestion()" type="button" class="btn btn-success btn-flat btn-left" ><i class="fa fa-check-square-o" ></i> Thêm</button>   
+                                        <button onclick="tong()" type="button" class="btn btn-success btn-flat " ><i class="fa fa-check-square-o" ></i> Thành tiền</button>     
                                     <button type="submit" class="btn btn-success btn-flat btn-right" ><i class="fa fa-check-square-o"></i> Cập Nhật</button>                                     
                                 </div>
                             </div>    
@@ -63,7 +81,7 @@
                         <div class="form-group">
                             <label class="col-sm-3 col-lg-2 control-label">Tên Khách hàng</label>
                             <div class="col-sm-9 col-lg-10 controls">
-                                <input type="text" id="name-kh" class="form-control "   class="form-control" name="name_kh"/>                                                                          
+                                <input type="text" id="name-kh" class="form-control catname"   class="form-control" name="name_kh"/>                                                                          
                             </div>
                         </div>   
                         <div class="form-group">
@@ -72,7 +90,16 @@
                                 <input type='number' id="phone" class="form-control" name="phone" />                                        
                             </div>
                         </div> 
-                        
+                        <div class="form-group">
+                            <label class="col-sm-3 col-lg-2 control-label">Tên Nhân viên</label>
+                            <div class="col-sm-9 col-lg-10 controls nv">
+                                <select class="form-control" name="name_nv">                               
+                                    <% emp.forEach(function(emp){ %>
+                                        <option value="<%= emp.name %>"><%= emp.name %></option>
+                                        <% }); %>
+                                </select>                                                                         
+                            </div>
+                        </div>
                         <div id="load_prod">
                                 
                         </div>

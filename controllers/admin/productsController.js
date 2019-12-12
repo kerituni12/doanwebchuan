@@ -135,8 +135,7 @@ exports.edit_product_post = function (req, res) {
     var errors = req.validationErrors();
 
     if (errors) {
-        // req.session.errors = errors;
-
+        req.app.locals.errors = errors;
         res.redirect('/admin/products');
     } else {
                 Product.findById(id, function (err, p) {

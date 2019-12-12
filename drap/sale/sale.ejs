@@ -18,11 +18,8 @@
                             data-original-title="Thêm"><i class="fa fa-plus"></i></a>
                     </div>
                     <div class="btn-group">
-                        <a title=""
-                            onclick="printJS({printable: 'print', type: 'html',                             
-                            style: 'table{font-family:arial,sans-serif;border-collapse:collapse;width:100%}td,th{border:1px solid #ddd;text-align:left;padding:8px}tr:nth-child(even){background-color:#ddd}'})"
-                            class="btn btn-circle show-tooltip" data-toggle="modal" href="#"
-                            data-original-title="Print"><i class="fa fa-print"></i></a>
+                            <a title="" onclick="printJS({printable: 'print', type: 'html', style: 'table{font-family:arial,sans-serif;border-collapse:collapse;width:100%}td,th{border:1px solid #ddd;text-align:left;padding:8px}tr:nth-child(even){background-color:#ddd}'})" class="btn btn-circle show-tooltip" data-toggle="modal" href="#"
+                                data-original-title="Print"><i class="fa fa-print"></i></a>
                     </div>
                     <div class="btn-group">
                         <a title="" id="excel" class="btn btn-circle show-tooltip" data-toggle="modal" href="#"
@@ -31,7 +28,7 @@
                 </div>
                 <br>
                 <br>
-                <div class="table-responsive">
+                <div class="table-responsive" >
                     <% if(count > 0) {%>
                     <table id="example" class="display">
                         <thead>
@@ -39,10 +36,9 @@
                                 <th>#</th>
                                 <th>Tên khách hàng</th>
                                 <th>Tên nhân viên</th>
-                                <th>Ngày</th>
-                                <th>Thành tiền</th>
+                                <th>Thành tiền</th>                                
                                 <th></th>
-
+                               
                             </tr>
                         </thead>
                         <tbody>
@@ -51,10 +47,8 @@
                                 <td><%= i + 1 %></td>
                                 <td><%= sale.user_mem %></td>
                                 <td><%= sale.user_emp %></td>
-                                <td><%= sale.date.getDate() + "-" + (sale.date.getMonth() + 1 ).toString().padStart(2,"0") + "-" + sale.date.getFullYear() %>
-                                </td>
                                 <td><%= sale.total %></td>
-
+                                
                                 <!-- <td><%= sale.status %></td>                                 -->
                                 <td>
                                     <a class="btn btn-primary btn-sm edit" href="#" data-id="<%= sale._id %>"
@@ -62,7 +56,7 @@
                                     <a class="btn btn-danger btn-sm delete" href="#" data-id="<%= sale._id %>"><i
                                             class="fa fa-trash-o"></i> Delete</a>
 
-                                </td>
+                                </td>                                
                             </tr>
                             <% }); %>
 
@@ -74,20 +68,15 @@
                 </div>
 
                 <div class="table-responsive" style="display: none">
-                    <div id="print">
-
-                        <h2 style="text-align: center;">Hóa Đơn Bán Hàng</h2>
-
                         <% if(count > 0) {%>
-                        <table>
+                        <table id="print">
                             <thead>
                                 <tr>
                                     <th>#</th>
                                     <th>Tên khách hàng</th>
                                     <th>Tên nhân viên</th>
-                                    <th>Ngày</th>
-                                    <th>Thành tiền</th>
-
+                                    <th>Thành tiền</th>    
+                                   
                                 </tr>
                             </thead>
                             <tbody>
@@ -96,20 +85,16 @@
                                     <td><%= i + 1 %></td>
                                     <td><%= sale.user_mem %></td>
                                     <td><%= sale.user_emp %></td>
-                                    <td><%= sale.date.getDate() + "-" + (sale.date.getMonth() + 1 ).toString().padStart(2,"0") + "-" + sale.date.getFullYear() %>
-                                    </td>
                                     <td><%= sale.total %></td>
                                 </tr>
                                 <% }); %>
-
+    
                             </tbody>
                         </table>
                         <% } else {%>
                         <h3 class="text-center"> Không có đơn hàng</h3>
                         <% }%>
                     </div>
-
-                </div>
             </div>
         </div>
     </div>
@@ -125,90 +110,33 @@
 <script src="/js/jquery.table2excel.js"></script>
 <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
 <script>
-    // Clone Product
-    // var listProductSelected = [];
+    
+    function cloneQuestion() {
 
-    function cloneProduct() {
+        var question_template = document.getElementsByClassName('prod')
+        question_template = question_template[question_template.length - 1].cloneNode(true)
 
-        // Use for DOM NODE 
-        // product = product[product.length - 1].cloneNode(true);        
-        // var tray = document.getElementsByClassName('prod')[0];
-        // form.insertBefore(product, tray);
-        // var form = document.getElementById('add-sale');
-
-        let product = `
-            <div class="form-group prod">
-                <label class="col-sm-3 col-lg-2 control-label">Sản phẩm</label>
-                <div class="col-sm-9 col-lg-4 controls">
-                    <select class="form-control selectedProduct" name="product">                               
-                        
-                        <% products.forEach(function(pro){ %>
-                                            <option value="<%= pro.slug %>" data-price="<%= pro.price%>" data-count="<%= pro.count%>"><%= pro.title %></option>
-                                            <% }); %>
-                            
-                    </select>            
-                </div>
-                <div class="col-sm-9 col-lg-2 controls">
-                    <input type="number" min="0" value="0" class="form-control countProduct" name="count">                                                                          
-                </div>
-                <div class="col-sm-9 col-lg-2 controls">
-                    <a class="btn btn-danger btn-sm " href="#" onclick="deleteProduct(this)"><i class="fa fa-trash-o"></i></a>
-                </div>
-            </div>
-        `
-        var get = document.getElementById('allProduct');
-        get.insertAdjacentHTML('beforeend', product);
-
-        changeCount();
+        var form = document.getElementById('add-sale')
+        var tray = document.getElementsByClassName('prod')[0]
+        form.insertBefore(question_template, tray)
 
     }
-
-    // Event onChangeCount
-
-    function changeCount() {
-        $(".countProduct, .selectedProduct").bind('keyup mouseup', function () {
-            // console.log(this.value);
-            total();
-        });
-
-    }
-
-    function deleteProduct(x) {
-        let a = x.parentNode.parentNode;
-        a.parentNode.removeChild(a);
-        total();
-    }
-
-    function total() {
-        let tong = 0;
+        
+    function tong() {
+        let tong = 0 ;
         Array.from(document.getElementsByClassName('prod')).forEach((t, s) => {
-            t.children[2].children[0].max = t.children[1].children[0].selectedOptions[0].dataset.count;
-            tong += Number(t.children[1].children[0].selectedOptions[0].dataset.price * t.children[2].children[
-                0].value);
-        });
+   tong += Number(t.children[1].children[0].selectedOptions[0].dataset.price * t.children[2].children[0].value) ;
+});
 
-        $('#total').val(tong);
+$('#total').val(tong);
     }
-
-    // function setMaxCount() {
-    //     Array.from(document.getElementsByClassName('prod')).forEach((t, s) => {            
-    //         tong += Number(t.children[1].children[0].selectedOptions[0].dataset.count * t.children[2].children[
-    //             0].value);
-    //     });
-    // }
-
     $(function () {
-
-        cloneProduct();
-        // listProductSelected.push(document.getElementsByName('product')[0].selectedOptions[0].value);
-
-        changeCount();
 
         $(document).on('click', '.edit', function (e) {
             e.preventDefault();
             $('#edit').modal('show');
-            var id = $(this).data('id');
-
+            var id = $(this).data('id');            
+            
             $.ajax({
                 type: 'GET',
                 url: '/admin/sales/edit-sale/' + id,
@@ -217,9 +145,10 @@
                     $('#name-kh').val(response.user_mem);
                     $('#phone').val(response.phone);
                     $('#edit-total').val(response.total);
-                    $('#load_prod').empty();
-                    let i = 1;
-                    for ([prod, count] of Object.entries(response.items[0])) {
+                    $(".nv select").val(response.user_emp).prop('selected', true);
+
+                    let i= 1;
+                    for( [prod , count] of Object.entries(response.items[0]) ){                       
                         $('#load_prod').append(`
                         <div class="form-group">
                                 <label class="col-sm-3 col-lg-2 control-label">Sản phẩm ${i }</label>
@@ -262,15 +191,15 @@
     });
 
     // xuất excel
-    $("#excel").click(function () {
-        $("#print").table2excel({
-            // exclude CSS class
-
-            name: "Worksheet Name",
-            filename: "Excel", //do not include extension
-            fileext: ".xls" // file extension
-        });
-    });
+    $("#excel").click(function(){
+    $("#print").table2excel({
+        // exclude CSS class
+       
+        name: "Worksheet Name",
+        filename: "Excel", //do not include extension
+        fileext: ".xls" // file extension
+    }); 
+    });    
 </script>
 </body>
 
