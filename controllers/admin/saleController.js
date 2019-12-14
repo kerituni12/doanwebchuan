@@ -174,3 +174,34 @@ exports.total = async function (req, res) {
 
     res.send(arr);
 }
+
+exports.totaldate = async function (req, res) {
+    //    console.log('year', req.params.year);
+        // chua toi uu
+        let date = new Date()
+        let day = date.getDate();
+        let month = date.getMonth();
+        let arr = [];
+        let arr2 = [];    
+            for (let i = 8; i < 18; i ++) {
+                let sum1 = 0, sum2 = 0;
+                await Sale.find(function(err, sale) {   
+                    sale.forEach((v, j) => {                   
+                        if(v.date.getMonth() == month){
+
+                            console.log(v.date.getHour());
+
+                            if(v.date.getDate() == day && v.date.getHour() == i) sum1 += v.total;
+
+                            // not check day = 1 return day = 31 || 30 prev month
+                            if(v.date.getDate() == day - 1 && v.date.getHour() == i) sum2 += v.total;
+                        } 
+                    })             
+                    
+                })            
+                arr.push(sum1);
+                arr2.push(sum2);
+            }
+    
+        res.send({arr, arr2});
+    }

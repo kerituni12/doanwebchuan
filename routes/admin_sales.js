@@ -15,6 +15,8 @@ router.get('/edit-sale/:id', isAdmin, saleController.edit_sale_get);
 
 router.get('/total/:year', isAdmin, saleController.total);
 
+router.get('/totaldate', saleController.totaldate);
+
 router.post('/delete-sale/:id', isAdmin, saleController.delete_sale_post);
 
 

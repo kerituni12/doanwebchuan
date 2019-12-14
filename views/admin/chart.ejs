@@ -5,7 +5,37 @@
     <div class="col-md-12">
         <div class="box">
             <div class="box-title">
-                <h3><i class="fa fa-table"></i> Biểu đồ</h3>
+                <h3><i class="fa fa-table"></i> Biểu đồ theo ngày</h3>
+                <div class="box-tool">
+                    <a data-action="collapse" href="#"><i class="fa fa-chevron-up"></i></a>
+                    <a data-action="close" href="#"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <div class="box-tools pull-right">
+                <div class="form-group">
+                    <label>Chọn năm: </label>
+                    <select class="form-control input-sm" id="select_year">
+
+                        <option value="2018">2018</option>
+
+                        <option value="2019" selected>2019</option>
+
+                        <option value="2020">2020</option>
+
+                        <option value="2021">2021</option>
+
+                    </select>
+                </div>
+            </div>
+            <div class="box-content" style="max-width: 1120px; margin: auto;">
+                <canvas id="myChartDate" width="600" height="400"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-title">
+                <h3><i class="fa fa-table"></i> Biểu đồ theo năm</h3>
                 <div class="box-tool">
                     <a data-action="collapse" href="#"><i class="fa fa-chevron-up"></i></a>
                     <a data-action="close" href="#"><i class="fa fa-times"></i></a>
@@ -41,11 +71,8 @@
 <script>
     // let year = new Date().getFullYear();
 
-    loadChart(2019);
-    var myChart;
 
-    function loadChart(year) {
-        $.ajax({
+    $.ajax({
             type: 'GET',
             url: '/admin/sales/total/' + year,
             dataType: 'json',
@@ -82,6 +109,42 @@
 
             }
         })
+
+    loadChart(2019);
+    var myChart;
+
+    function loadChart(year) {
+        $.ajax({
+            type: 'GET',
+            url: '/admin/sales/totaldate',
+            dataType: 'json',
+            success: function (response) {               
+                new Chart(document.getElementById("myChartDate"), {
+                    type: 'line',
+                    data: {
+                        labels: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+                        datasets: [{
+                            data: [86, 114, 106, 106, 107, 111, 133, 221, 783, 2478, 212],
+                            label: "Ngày hôm nay",
+                            borderColor: "#3e95cd",
+                            fill: false
+                        }, {
+                            data: [282, 350, 411, 502, 635, 809, 947, 1402, 3700, 5267, 1212],
+                            label: "Ngày hôm qua",
+                            borderColor: "#8e5ea2",
+                            fill: false
+                        }]
+                    },
+                    options: {
+                        title: {
+                            display: true,
+                            text: 'World population per region (in millions)'
+                        }
+                    }
+                });
+
+            }
+        })
     }
 
 
@@ -100,6 +163,11 @@
 
         loadChart(this.value);
     });
+
+
+
+    
+
 </script>
 </body>
 

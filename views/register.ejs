@@ -1,11 +1,11 @@
 <% include _layouts/header %>
 
-<h1><%= title %></h1>
+<h1>Đăng kí</h1>
 
 <form method="post" action="/users/register">
 
     <div class="form-group">
-        <label>Name</label>
+        <label>Tên</label>
         <input type="text" name="name" class="form-control" placeholder="Name">
     </div>
 
@@ -20,16 +20,16 @@
     </div>
 
     <div class="form-group">
-        <label>Password</label>
+        <label>Mật khẩu</label>
         <input type="password" name="password" class="form-control"  placeholder="Password">
     </div>
     
     <div class="form-group">
-        <label>Confirm Password</label>
+        <label>Nhập lại mật khẩu</label>
         <input type="password" name="password2" class="form-control"  placeholder="Confirm Password">
     </div>
 
-    <button type="submit" class="btn btn-default">Register</button>
+    <button type="submit" class="btn btn-default">Đăng kí</button>
 </form>
 
 <% include _layouts/footer %>
