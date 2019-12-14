@@ -36,58 +36,58 @@ function handleLoopMessage(sender_psid, received_message) {
               callSendAPI(sender_psid, response);
               id.loop += 1;
               id.temppass = user.password;
-              if(user.role == 'admin') id.admin = 1; 
+              if (user.role == 'admin') id.admin = 1;
               id.save(function (err) {
                 if (err)
                   return console.log(err);
               });
-            }else {
+            } else {
               response = {
                 "text": "Tên đăng nhập không đúng vui lòng nhập lại"
               }
               callSendAPI(sender_psid, response);
-            } 
+            }
           })
           return;
 
-        case 2:        
-            bcrypt.compare(received_message.text, id.temppass, function (err, isMatch) {
-              if (err)
-                  console.log(err);
+        case 2:
+          bcrypt.compare(received_message.text, id.temppass, function (err, isMatch) {
+            if (err)
+              console.log(err);
 
-              if (isMatch) {
-                if(id.admin){
-                  response = {
-                    "text": "Bạn đã đăng nhập thành công"
-                    }
-                    callSendAPI(sender_psid, response);
-                    id.loop  = 0; 
-                    id.save(function (err) {
-                      if (err)
-                        return console.log(err);
-                    });       
-                }else {
-                  response = {
-                    "text": "Vui lòng đăng nhập với tài khoản admin"
-                    }
-                    callSendAPI(sender_psid, response);
-                    id.loop  = 0; 
-                    id.save(function (err) {
-                      if (err)
-                        return console.log(err);
-                    });       
+            if (isMatch) {
+              if (id.admin) {
+                response = {
+                  "text": "Bạn đã đăng nhập thành công"
                 }
-                           
+                callSendAPI(sender_psid, response);
+                id.loop = 0;
+                id.save(function (err) {
+                  if (err)
+                    return console.log(err);
+                });
               } else {
                 response = {
-                  "text": "Vui lòng nhập lại password"
+                  "text": "Vui lòng đăng nhập với tài khoản admin"
                 }
-                callSendAPI(sender_psid, response);                
+                callSendAPI(sender_psid, response);
+                id.loop = 0;
+                id.save(function (err) {
+                  if (err)
+                    return console.log(err);
+                });
               }
-          }); 
 
-          return;         
-        
+            } else {
+              response = {
+                "text": "Vui lòng nhập lại password"
+              }
+              callSendAPI(sender_psid, response);
+            }
+          });
+
+          return;
+
         default:
           response = {
             "attachment": {
@@ -111,61 +111,33 @@ function handleLoopMessage(sender_psid, received_message) {
 
 }
 
-//  send chart to mess 
 
-
+/**
+ * This function to handle message for event
+ * @param {*} sender_psid 
+ * @param {*} received_message 
+ */
 function handleMessage(sender_psid, received_message) {
   let response;
-  
+
   switch (received_message.text.toLowerCase()) {
-    case 'biểu đồ':
-        sendChart('chart', sender_psid);
-        return;
+    case 'biểu đồ năm nay':
+      sendChart('year', sender_psid);
+      return;
+    case 'biểu đồ hôm nay':
+      sendChart('day', sender_psid);
+      return;
 
-    // Chart for month 
-
-    // case 't1':
-    //   sendChart('chart1', sender_psid);
-    //   return;
-    // case 't2':
-    //   sendChart('chart2', sender_psid);
-    //   return;
-    // case 't3':
-    //   sendChart('chart3', sender_psid);
-    //   return;
-    // case 't4':
-    //   sendChart('chart4', sender_psid);
-    //   return;
-    // case 't5':
-    //   sendChart('chart5', sender_psid);
-    //   return;
-    // case 't6':
-    //   sendChart('chart6', sender_psid);
-    //   return;
-    // case 't7':
-    //   sendChart('chart7', sender_psid);
-    //   return;
-    // case 't8':
-    //   sendChart('chart8', sender_psid);
-    //   return;
-    // case 't9':
-    //   sendChart('chart9', sender_psid);
-    //   return;
-    // case 't10':
-    //   sendChart('chart10', sender_psid);
-    //   return;
-    // case 't11':
-    //   sendChart('chart11', sender_psid);
-    //   return;
-    // case 't12':
-    //   sendChart('chart12', sender_psid);
-    //   return;
-    case 'logout':     
-      Mess.findOneAndRemove({id:sender_psid}, function (err) {
-          if (err)
-              return console.log(err);
-              callSendAPI(sender_psid, {"text": "đã logout"});
-      });  
+    case 'logout':
+      Mess.findOneAndRemove({
+        id: sender_psid
+      }, function (err) {
+        if (err)
+          return console.log(err);
+        callSendAPI(sender_psid, {
+          "text": "đã logout"
+        });
+      });
       return;
     case 'login':
       response = {
@@ -190,7 +162,7 @@ function handleMessage(sender_psid, received_message) {
 
 // Start event login 
 
-function handleLogin (sender_psid){
+function handleLogin(sender_psid) {
   response = {
     "attachment": {
       "type": "template",
@@ -209,7 +181,11 @@ function handleLogin (sender_psid){
   return;
 }
 
-//Handler Postback
+/**
+ * This is function to recive handle postback from facebook     
+ * @param {id user } sender_psid 
+ * @param {...} received_postback 
+ */
 function handlePostback(sender_psid, received_postback) {
 
   //do something
@@ -239,9 +215,15 @@ function handlePostback(sender_psid, received_postback) {
   }
 }
 
-// Messenger Send API
+/**
+ * This is function to Send text message
+ * @param {id user for recive mess} sender_psid 
+ * @param {object message include text } response 
+ */
 
-async function callSendAPI(sender_psid, response = {'text': 'day la tin nhan mac dinh'}) {
+async function callSendAPI(sender_psid, response = {
+  'text': 'day la tin nhan mac dinh'
+}) {
 
   // Construct the message body
   let request_body = {
@@ -270,62 +252,137 @@ async function callSendAPI(sender_psid, response = {'text': 'day la tin nhan mac
 }
 
 
-// Send img chart
+/**
+ * This async function to render the template for day or year (2019)
+ */
+
+async function getTemplateForDay() {
+  let date = new Date()
+  let day = date.getDate();
+  let month = date.getMonth();
+  let arr = [];
+  let arr2 = [];
+  for (let i = 8; i <= 18; i++) {
+    let sum1 = 0,
+      sum2 = 0;
+    await Sale.find(function (err, sale) {
+      sale.forEach((v, j) => {
+        if (v.date.getMonth() == month) {
+
+          if (v.date.getDate() == day && v.date.getHours() == i) sum1 += v.total;
+
+          // not check day = 1 return day = 31 || 30 prev month
+          if (v.date.getDate() == day - 1 && v.date.getHours() == i) sum2 += v.total;
+        }
+      })
+
+    })
+    arr.push(sum1);
+    arr2.push(sum2);
+  }
+
+  return `<html>
+          <head>
+              <title></title>
+              <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+          </head>
+          <body style="max-width: 850px; margin: auto;">
+                <div>
+                        <canvas id="myChart" width="600" height="400"></canvas>
+                </div>
+               
+            </body>
+          <script>
+              new Chart(document.getElementById("myChart"), {
+                type: 'line',
+                data: {
+                    label: 'biểu đồ theo ngày',
+                    labels: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+                    datasets: [{
+                        data: [${arr}],
+                        label: "Ngày hôm nay",
+                        borderColor: "#3e95cd",
+                        fill: false
+                    }, {
+                        data: [${arr2}],
+                        label: "Ngày hôm qua",
+                        borderColor: "#8e5ea2",
+                        fill: false
+                    }]
+                }
+            });
+            </script>
+          </html>`;
+}
+
+async function getTemplateForYear() {
+  let arr = [];
+  for (let i = 0; i < 12; i++) {
+    let sum = 0;
+    await Sale.find(function (err, sale) {
+      sale.forEach((v, j) => {
+        if (v.date.getFullYear() == 2019 && v.date.getMonth() == i) {
+          sum += v.total;
+        }
+      })
+
+    })
+    arr.push(sum);
+  }
+
+  return `<html>
+          <head>
+              <title></title>
+              <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+          </head>
+          <body style="max-width: 850px; margin: auto;">
+                <div><canvas id="myChart" width="600" height="400"></canvas></div>
+          </body>
+          <script>
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+                    datasets: [{
+                        label: 'biểu đồ theo năm',
+                        data: [${arr}],
+                        borderWidth: 1,
+                        backgroundColor: [
+                          '#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231',
+                          '#911eb4', '#46f0f0', '#f032e6', '#bcf60c', '#fabebe',
+                          '#008080', '#e6beff'
+                      ],
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+            </script>
+          </html>`;
+}
+
+
+/**
+ * 
+ * @param {key for select year or day} chart 
+ * @param {id user for send} sender_psid 
+ */
 
 async function sendChart(chart, sender_psid) {
-  
-  let response;
-  let arr = [];    
-        for (let i = 0; i < 12; i ++) {
-            let sum = 0;
-            await Sale.find(function(err, sale) {   
-                sale.forEach((v, j) => {                   
-                    if(v.date.getFullYear() == 2019 && v.date.getMonth() == i) {
-                        sum += v.total;
-                        }
-                })             
-                
-            })            
-            arr.push(sum);
-        }
 
-  const htmlString =  `<html>
-  <head>
-      <title></title>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
-  </head>
-  <body style="max-width: 850px; margin: auto;">
-        <div>
-                <canvas id="myChart" width="600" height="400"></canvas>
-        </div>
-       
-    </body>
-  <script>
-    var ctx = document.getElementById('myChart').getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
-            datasets: [{
-                label: '${chart}',
-                data: [${arr}],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }
-        }
-    });
-    </script>
-  </html>`;
+  let response, htmlString;
 
-  // console.log('html', htmlString);
+  if (chart == "year") {
+    htmlString = await getTemplateForYear();
+  } else htmlString = await getTemplateForDay();
 
   // create img with puppeteer library and send chart 
 
@@ -344,7 +401,7 @@ async function sendChart(chart, sender_psid) {
       "attachment": {
         "type": "image",
         "payload": {
-          "url": "https://9448e64d.ngrok.io/images/" + chart + ".png",
+          "url": "https://c465f9cd.ngrok.io/images/" + chart + ".png",
           "is_reusable": true
         }
       }
@@ -356,6 +413,9 @@ async function sendChart(chart, sender_psid) {
   })()
 }
 
+/**
+ * Exports module
+ */
 
 module.exports = {
   handleMessage: handleMessage,
@@ -365,16 +425,3 @@ module.exports = {
   callSendAPI: callSendAPI,
   handleLogin: handleLogin
 }
-
-// await Product.findOne({slug: received_message.text}, function (err, product) {
-//   if (err) {
-//       console.log(err);
-//   } else {
-//      response = {
-//        "text": `your product ${product.title}`
-//      }
-//      console.log('da gan res');
-//   }
-//   console.log(product.title);
-// });
-// console.log(response);

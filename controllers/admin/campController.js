@@ -152,14 +152,14 @@ exports.send_camp = function (req, res) {
                 return;
             case 'gmail': 
                 gmail('kerituni123@gmail.com', 'kerituni123@gmail.com', camp.content, camp.content);
-                // camp.status = 1;
-                // camp.save(function (err) {
-                //     if (err)
-                //         return console.log(err);
+                camp.status = 1;
+                camp.save(function (err) {
+                    if (err)
+                        return console.log(err);
     
-                //     req.flash('success', 'Đã gửi!');
-                //     res.redirect('/admin/camps');
-                // });
+                    req.flash('success', 'Đã gửi!');
+                    res.redirect('/admin/camps');
+                });
                 return; 
             default:
                 return;

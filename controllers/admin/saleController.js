@@ -183,18 +183,18 @@ exports.totaldate = async function (req, res) {
         let month = date.getMonth();
         let arr = [];
         let arr2 = [];    
-            for (let i = 8; i < 18; i ++) {
+            for (let i = 8; i <= 18; i ++) {
                 let sum1 = 0, sum2 = 0;
                 await Sale.find(function(err, sale) {   
                     sale.forEach((v, j) => {                   
                         if(v.date.getMonth() == month){
 
-                            console.log(v.date.getHour());
+                             console.log(v.date.getHours());
 
-                            if(v.date.getDate() == day && v.date.getHour() == i) sum1 += v.total;
+                            if(v.date.getDate() == day && v.date.getHours() == i) sum1 += v.total;
 
                             // not check day = 1 return day = 31 || 30 prev month
-                            if(v.date.getDate() == day - 1 && v.date.getHour() == i) sum2 += v.total;
+                            if(v.date.getDate() == day - 1 && v.date.getHours() == i) sum2 += v.total;
                         } 
                     })             
                     
