@@ -13,7 +13,7 @@
     "dotenv": "^8.2.0",
     "ejs": "^2.5.7",
     "express": "^4.15.3",
-    "express-fileupload": "^0.1.4",
+    "express-fileupload": "^1.1.9",
     "express-messages": "^1.0.1",
     "express-session": "^1.15.5",
     "express-validator": "^3.2.1",
